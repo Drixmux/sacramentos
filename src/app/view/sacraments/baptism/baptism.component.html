@@ -1,0 +1,32 @@
+<div class="container">
+  <h1> Bautizo </h1>
+  <div class="row">
+    <div class="col">
+      <p-table [value]="certificates" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header">
+          <tr>
+            <th> Nombres </th>
+            <th> Apellido paterno </th>
+            <th> Apellido materno </th>
+            <th> Fecha de bautizo </th>
+            <th> Género </th>
+            <th> Optiones </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-certificate>
+          <tr>
+            <td> {{ certificate.user.nombres }} </td>
+            <td> {{ certificate.user.apellidoPaterno }} </td>
+            <td> {{ certificate.user.apellidoMaterno }} </td>
+            <td> {{ certificate.fecha }} </td>
+            <td> {{ certificate.user.genero }} </td>
+            <td> ---- </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Existen {{ certificates.length }} bautizados.
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

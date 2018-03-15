@@ -1,0 +1,44 @@
+<br/><br/>
+<div class="row login-page">
+  <div class="col l6 offset-l3 m8 offset-m2 s12 z-depth-4">
+    <div class="col s12 z-depth-5 card-panel form-container">
+      <div class="row">
+        <div class="input-field col s12 center">
+          <h1>Bienvenido</h1>
+          <img src="assets/materialize-admin/images/logo.jpg" alt="" class="circle responsive-img valign profile-image-login">
+          <p class="center login-form-text">
+            <b>Ingreso de Fieles</b>
+          </p>
+        </div>
+      </div>
+
+      <div class="row margin">
+        <div class="input-field col s12">
+          <i class="mdi-social-person-outline prefix"></i>
+          <input id="email" name="email" type="text" [(ngModel)]="email" autofocus>
+          <label for="email" class="center-align"> Correo </label>
+        </div>
+      </div><br>
+      <div class="row margin">
+        <div class="input-field col s12">
+          <i class="mdi-action-lock-outline prefix"></i>
+          <input id="password" name="password" type="password" [(ngModel)]="password">
+          <label for="password"> Contraseña </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <button class="btn waves-effect waves-light col s12" (click)="loginWithHash()"> Acceder </button>
+        </div>
+      </div>
+      <br/><br/><br/>
+      <!-- TODO enable public registration or remove this
+      <div class="row">
+        <div class="input-field col s12">
+          <button class="btn waves-effect waves-light col light-blue darken-4 s12"> Registrarse ahora </button>
+        </div>
+      </div>
+      -->
+    </div>
+  </div>
+</div>
