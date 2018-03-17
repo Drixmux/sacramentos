@@ -38,6 +38,7 @@ import { MainResolver } from './resolvers/main.resolver';
 
 import { TableModule } from 'primeng/table';
 import { SliderModule } from 'primeng/slider';
+import { ButtonModule } from 'primeng/button';
 
 export class ToastCustomOption extends ToastOptions {
   animate = 'fade'; // you can override any options available
@@ -55,7 +56,8 @@ const SERVICES = [
 
 const PRIMENG_MODULES = [
   TableModule,
-  SliderModule
+  SliderModule,
+  ButtonModule
 ];
 @NgModule({
   declarations: [

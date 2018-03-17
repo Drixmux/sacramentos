@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
-import {Account, User, Certificate, Header } from '../../../app.store.model';
+import { Account, User, Certificate, Header } from '../../../app.store.model';
 import { Observable } from 'rxjs/Observable';
 
 import { UserService } from '../../../services/user.service';
@@ -23,6 +23,9 @@ export class BaptismComponent implements OnInit, OnDestroy {
   certificates: Certificate[];
   headers: Header[];
 
+  loading: boolean;
+  quantity: number;
+
   constructor(
     private userService: UserService,
     private accountService: AccountService,
@@ -32,6 +35,9 @@ export class BaptismComponent implements OnInit, OnDestroy {
     me.END_subscription$ = new Subject<boolean>();
     me.user$ = me.userService.user$.takeUntil(me.END_subscription$);
     me.certificates$ = me.certificateService.certificate$.takeUntil(me.END_subscription$);
+
+    me.loading = true;
+    me.quantity = 5;
 
     me.account = {
       sub: '',
@@ -61,118 +67,6 @@ export class BaptismComponent implements OnInit, OnDestroy {
       header: 'Género',
       field: 'user.genero'
     }];
-
-    /*
-    me.certificates = [{
-      id: 1,
-      parroquiaId: 1,
-      sacerdoteCertificadorId: 1,
-      sacerdoteCelebranteId: 1,
-      jurisdiccionId: 1,
-      fecha: '1998-05-12',
-      observaciones: '',
-      fechaCreacion: '1998-05-12',
-      user: {
-        id: 1,
-        ci: '',
-        nombres: 'Persona 1',
-        apellidoPaterno: '1',
-        apellidoMaterno: '1',
-        celular: '',
-        facebook: '',
-        fechaNacimiento: '1998-05-12',
-        genero: 'Masculino',
-        procedencia: '',
-        fechaCreacion: '1998-05-12',
-      },
-      sacrament: {
-        id: 1,
-        sacramento: 'Bautizo',
-        fechaCreacion: '1998-05-12',
-      }
-    }, {
-      id: 2,
-      parroquiaId: 1,
-      sacerdoteCertificadorId: 1,
-      sacerdoteCelebranteId: 1,
-      jurisdiccionId: 1,
-      fecha: '1992-05-12',
-      observaciones: '',
-      fechaCreacion: '1992-05-12',
-      user: {
-        id: 2,
-        ci: '',
-        nombres: 'Persona 2',
-        apellidoPaterno: '2',
-        apellidoMaterno: '2',
-        celular: '',
-        facebook: '',
-        fechaNacimiento: '1992-05-12',
-        genero: 'Masculino',
-        procedencia: '',
-        fechaCreacion: '1992-05-12'
-      },
-      sacrament: {
-        id: 1,
-        sacramento: 'Bautizo',
-        fechaCreacion: '1992-05-12'
-      }
-    }, {
-      id: 3,
-      parroquiaId: 1,
-      sacerdoteCertificadorId: 1,
-      sacerdoteCelebranteId: 1,
-      jurisdiccionId: 1,
-      fecha: '1996-05-12',
-      observaciones: '',
-      fechaCreacion: '1996-05-12',
-      user: {
-        id: 3,
-        ci: '',
-        nombres: 'Persona 3',
-        apellidoPaterno: '3',
-        apellidoMaterno: '3',
-        celular: '',
-        facebook: '',
-        fechaNacimiento: '1996-05-12',
-        genero: 'Masculino',
-        procedencia: '',
-        fechaCreacion: '1996-05-12'
-      },
-      sacrament: {
-        id: 1,
-        sacramento: 'Bautizo',
-        fechaCreacion: '1996-05-12'
-      }
-    }, {
-      id: 4,
-      parroquiaId: 1,
-      sacerdoteCertificadorId: 1,
-      sacerdoteCelebranteId: 1,
-      jurisdiccionId: 1,
-      fecha: '1987-05-12',
-      observaciones: '',
-      fechaCreacion: '1987-05-12',
-      user: {
-        id: 4,
-        ci: '',
-        nombres: 'Persona 4',
-        apellidoPaterno: '4',
-        apellidoMaterno: '4',
-        celular: '',
-        facebook: '',
-        fechaNacimiento: '1987-05-12',
-        genero: 'Masculino',
-        procedencia: '',
-        fechaCreacion: '1987-05-12'
-      },
-      sacrament: {
-        id: 1,
-        sacramento: 'Bautizo',
-        fechaCreacion: '1987-05-12'
-      }
-    }];
-    */
   }
 
   ngOnInit() {
@@ -188,8 +82,9 @@ export class BaptismComponent implements OnInit, OnDestroy {
     );
     me.certificates$.subscribe(
       data => {
-        if (data) {
-          console.log(data);
+        if (data && data['status'] && data['status'] == 'success') {
+          me.certificates = data['certificates'];
+          me.loading = false;
         }
       }
     );
