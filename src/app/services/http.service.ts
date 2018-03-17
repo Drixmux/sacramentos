@@ -12,7 +12,8 @@ import { RedirectService } from './redirect.service';
 @Injectable()
 export class HttpService {
 
-  public serviceURL = 'http://localhost/ceb-api/web';
+  // public serviceURL = 'http://localhost/ceb-api/web';
+  public serviceURL = 'http://api.pastoraldigital.net';
 
   constructor(public _http: Http, private _redirectService: RedirectService) {}
 
@@ -21,9 +22,9 @@ export class HttpService {
     return me.intercept(me._http.request(url, me.getRequestOptionArgs(options)));
   }
 
-  get(url: string, options?: RequestOptionsArgs): Observable<Response> {
+  get(url: string, options?: RequestOptionsArgs, qparams?: Object): Observable<Response> {
     const me = this;
-    return me.intercept(me._http.get(url, me.getRequestOptionArgs(options)));
+    return me.intercept(me._http.get(url, me.getRequestOptionArgs(options, qparams)));
   }
 
   post(url: string, body: Object, options?: RequestOptionsArgs): Observable<Response> {
@@ -41,13 +42,17 @@ export class HttpService {
     return me.intercept(me._http.delete(url, options));
   }
 
-  getRequestOptionArgs(options?: RequestOptionsArgs): RequestOptionsArgs {
+  getRequestOptionArgs(options?: RequestOptionsArgs, qparams?: Object): RequestOptionsArgs {
     if (!options) {
       options = new RequestOptions();
     }
 
     if (!options.headers) {
       options.headers = new Headers();
+    }
+
+    if (!!qparams) {
+      options.params = qparams;
     }
 
     const userSession = window.sessionStorage.getItem('userSession');

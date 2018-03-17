@@ -2,14 +2,18 @@
   <h1> Bautizo </h1>
   <div class="row">
     <div class="col">
-      <p-table [value]="certificates" [paginator]="true" [rows]="10">
+      <p-table #tt [columns]="headers" [value]="certificates" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="caption">
+          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th> Nombres </th>
-            <th> Apellido paterno </th>
-            <th> Apellido materno </th>
-            <th> Fecha de bautizo </th>
-            <th> Género </th>
+            <th *ngFor="let header of headers"
+              [pSortableColumn]="header.field">
+              {{ header.header }}
+              <p-sortIcon [field]="header.field"></p-sortIcon>
+            </th>
             <th> Optiones </th>
           </tr>
         </ng-template>

@@ -36,7 +36,6 @@ export class SideBarComponent implements OnInit, OnDestroy, AfterViewInit {
       data => {
         if (data && data['account']) {
           me.account = data['account'];
-          console.log(me.account);
         }
       }, error => {
         me.accountService.logOut({});

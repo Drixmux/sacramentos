@@ -42,3 +42,7 @@ export interface Certificate {
   user: User;
   sacrament: Sacrament;
 }
+export interface Header {
+  header: string;
+  field: string;
+}
