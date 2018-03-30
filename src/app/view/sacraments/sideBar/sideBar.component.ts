@@ -6,7 +6,6 @@ import {Account, User} from '../../../app.store.model';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 
-// import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 // import {Observable} from "rxjs";
 
 @Component({

@@ -4,8 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { ToastModule, ToastOptions } from 'ng2-toastr';
-
 import { StoreModule } from '@ngrx/store';
 import { account } from './reducers/account.reducer';
 import { user } from './reducers/user.reducer';
@@ -39,6 +37,7 @@ import { CertificateService } from './services/certificate.service';
 import { FaithfulService } from './services/faithful.service';
 
 import { AccountToolsService } from './utils/account.tools.service';
+import { ConfirmationService } from 'primeng/api';
 
 import { AppResolver } from './app.resolver';
 import { MainResolver } from './resolvers/main.resolver';
@@ -53,13 +52,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { GrowlModule } from 'primeng/growl';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-
-export class ToastCustomOption extends ToastOptions {
-  animate = 'fade'; // you can override any options available
-  positionClass = 'toast-top-center';
-  toastLife = 4000;
-}
 
 const SERVICES = [
   HttpService,
@@ -71,7 +67,11 @@ const SERVICES = [
 ];
 
 const UTILS = [
-  AccountToolsService
+  AccountToolsService,
+];
+
+const PRIMENG_SERVICES = [
+  ConfirmationService
 ];
 
 const PRIMENG_MODULES = [
@@ -84,7 +84,10 @@ const PRIMENG_MODULES = [
   DropdownModule,
   CalendarModule,
   AutoCompleteModule,
-  ProgressBarModule
+  ProgressBarModule,
+  BreadcrumbModule,
+  GrowlModule,
+  ConfirmDialogModule
 ];
 @NgModule({
   declarations: [
@@ -107,7 +110,6 @@ const PRIMENG_MODULES = [
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    ToastModule.forRoot(),
     AppRoutingModule,
     StoreModule.forRoot({
       account: account,
@@ -121,8 +123,8 @@ const PRIMENG_MODULES = [
     AppResolver,
     MainResolver,
     SERVICES,
-    UTILS,
-    {provide: ToastOptions, useClass: ToastCustomOption}
+    PRIMENG_SERVICES,
+    UTILS
   ],
   bootstrap: [AppComponent]
 })

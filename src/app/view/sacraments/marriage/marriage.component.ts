@@ -8,7 +8,6 @@ import { UserService } from '../../../services/user.service';
 import { AccountService } from '../../../services/account.service';
 import { CertificateService } from '../../../services/certificate.service';
 
-// import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 // import {Observable} from "rxjs";
 
 @Component({

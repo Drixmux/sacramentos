@@ -10,11 +10,16 @@ import { FaithfulService } from '../../../services/faithful.service';
 
 import { AccountToolsService } from '../../../utils/account.tools.service';
 
-import { LOAD_ALL_FAITHFUL, CREATE_FAITHFUL } from '../../../reducers/faithful.reducer';
+import { ConfirmationService } from 'primeng/api';
+
+import { Message } from 'primeng/components/common/api';
+
+import {LOAD_ALL_FAITHFUL, CREATE_FAITHFUL, DELETE_FAITHFUL} from '../../../reducers/faithful.reducer';
 
 import { Permissions } from '../../../constants';
 
-// import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+import { MenuItem } from 'primeng/api';
+
 // import {Observable} from "rxjs";
 
 @Component({
@@ -29,6 +34,9 @@ export class FaithfulComponent implements OnInit, OnDestroy {
   headers: Header[];
   faithful: Faithful[];
 
+  breadcrumbHome: MenuItem;
+  breadcrumbItems: MenuItem[];
+
   loading: boolean;
   quantity: number;
 
@@ -39,11 +47,14 @@ export class FaithfulComponent implements OnInit, OnDestroy {
 
   permissions;
 
+  messages: Message[];
+
   constructor(
     private accountToolsService: AccountToolsService,
     private userService: UserService,
     private accountService: AccountService,
-    private faithfulService: FaithfulService
+    private faithfulService: FaithfulService,
+    private confirmationService: ConfirmationService
   ) {
     const me = this;
     me.END_subscription$ = new Subject<boolean>();
@@ -51,6 +62,11 @@ export class FaithfulComponent implements OnInit, OnDestroy {
     me.faithful$ = me.faithfulService.faithful$.takeUntil(me.END_subscription$);
 
     me.permissions = Permissions;
+
+    me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
+    me.breadcrumbItems = [
+      {label:'Fieles'}
+    ];
 
     me.canCreateFaithful = false;
     me.canUpdateFaithful = false;
@@ -88,6 +104,8 @@ export class FaithfulComponent implements OnInit, OnDestroy {
       header: 'Género',
       field: 'genero'
     }];
+
+    me.messages = [];
   }
 
   ngOnInit() {
@@ -115,6 +133,13 @@ export class FaithfulComponent implements OnInit, OnDestroy {
               me.loading = false;
             }
             break;
+          case DELETE_FAITHFUL:
+            if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
+              me.faithful = data['payload']['faithful'];
+              me.loading = false;
+              me.showMessage('info', 'Eliminado', 'Se eliminó al fiel correctamente.');
+            }
+            break;
         }
       }
     );
@@ -125,5 +150,24 @@ export class FaithfulComponent implements OnInit, OnDestroy {
     const me = this;
     me.END_subscription$.next(true);
     me.END_subscription$.unsubscribe();
+  }
+
+  confirmDeleteModal(faithful) {
+    const me = this;
+    me.confirmationService.confirm({
+      message: '¿Esta seguro que quiere eliminar al fiel?',
+      header: 'Confirmación de eliminado',
+      icon: 'fa fa-trash',
+      accept: () => {
+        me.loading = true;
+        me.faithfulService.deleteFaithful({ 'id': faithful.id });
+      }
+    });
+  }
+
+  showMessage(severity, summary, detail) {
+    const me = this;
+    me.messages = [];
+    me.messages.push({severity: severity, summary: summary, detail: detail});
   }
 }

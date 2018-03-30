@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
@@ -8,12 +8,14 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../../services/user.service';
 import { AccountService } from '../../../../services/account.service';
 import { FaithfulService } from '../../../../services/faithful.service';
+
+import { Message } from 'primeng/components/common/api';
+
 import { LOAD_ALL_FAITHFUL, CREATE_FAITHFUL } from '../../../../reducers/faithful.reducer';
 
 import { ValidateUtil } from '../../../../utils/validate.service';
 
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
-import { SelectItem } from 'primeng/api';
+import { MenuItem, SelectItem } from 'primeng/api';
 
 // import {Observable} from "rxjs";
 
@@ -36,11 +38,14 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
   faithfulMotherData: any[];
   genre: SelectItem[];
 
+  breadcrumbHome: MenuItem;
+  breadcrumbItems: MenuItem[];
+
   loading: Boolean;
 
+  messages: Message[];
+
   constructor(
-    private toastr: ToastsManager,
-    private vcr: ViewContainerRef,
     private router: Router,
     private userService: UserService,
     private accountService: AccountService,
@@ -52,6 +57,12 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
     me.END_subscription$ = new Subject<boolean>();
     me.user$ = me.userService.user$.takeUntil(me.END_subscription$);
     me.faithful$ = me.faithfulService.faithful$.takeUntil(me.END_subscription$);
+
+    me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
+    me.breadcrumbItems = [
+      {label:'Fieles', routerLink: ['/sacraments', 'faithful']},
+      {label:'Registro'}
+    ];
 
     me.loading = false;
 
@@ -109,14 +120,12 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
       clear: 'Borrar'
     };
 
-    me.toastr.setRootViewContainerRef(vcr);
+    me.messages = [];
   }
 
   ngOnInit() {
     const me = this;
-    setTimeout(() => {
-      me.initJquery();
-    }, 1000);
+
     me.user$.subscribe(
       data => {
         if (data && data['account']) {
@@ -140,7 +149,7 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
               me.faithful = data['payload']['faithful'];
               me.router.navigate(['sacraments', 'faithful']);
             } else if(data['payload'] && data['payload']['status'] && data['payload']['status'] == 'error' && data['payload']['msg']) {
-              me.toastr.error(data['payload']['msg']);
+              me.showMessage('error', 'Error', data['payload']['msg']);
               me.loading = false;
             }
             break;
@@ -155,109 +164,51 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
     me.END_subscription$.unsubscribe();
   }
 
-  initJquery() {
-    const me = this;
-    const $ = window['$'];
-    /*$('.datepicker').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: 'Today',
-      clear: 'Clear',
-      close: 'Ok',
-      closeOnSelect: false, // Close upon selecting a date,
-      container: undefined, // ex. 'body' will append picker to body
-    });
-    $('select').material_select();
-    */
-    me.initAutocompleteInput();
-  }
-
-  initAutocompleteInput() {
-    const $ = window['$'];
-    const data = [{
-      'id': 1,
-      'name': 'person 1',
-      'label': 'person 1'
-    }, {
-      'id': 2,
-      'name': 'person 2',
-      'label': 'person 2'
-    }];
-    $('input.autocomplete-padre').autocomplete({
-      source: data,
-      minLength: 1,
-      select: function( event, ui ) {
-        console.log('padre: ', ui.item);
-      }
-    });
-    $('input.autocomplete-madre').autocomplete({
-      source: data,
-      minLength: 1,
-      select: function( event, ui ) {
-        console.log('madre: ', ui.item);
-      }
-    });
-    $('input.autocomplete-padrino').autocomplete({
-      source: data,
-      minLength: 1,
-      select: function( event, ui ) {
-        console.log('padrino: ', ui.item);
-      }
-    });
-    $('input.autocomplete-madrina').autocomplete({
-      source: data,
-      minLength: 1,
-      select: function( event, ui ) {
-        console.log('madrina: ', ui.item);
-      }
-    });
-  }
-
   validateData(record: Faithful) {
     const me = this;
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.nombres)) {
-      me.toastr.warning('El campo de nombres es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de nombres es obligatorio.');
       return false;
     }
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.apellidoPaterno)) {
-      me.toastr.warning('El campo de apellido paterno es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de apellido paterno es obligatorio.');
       return false;
     }
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.apellidoMaterno)) {
-      me.toastr.warning('El campo de apellido materno es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de apellido materno es obligatorio.');
       return false;
     }
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.fechaNacimiento)) {
-      me.toastr.warning('El campo de fecha de nacimiento es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de fecha de nacimiento es obligatorio.');
       return false;
     }
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.procedencia)) {
-      me.toastr.warning('El campo de procedencia es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de procedencia es obligatorio.');
       return false;
     }
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.genero)) {
-      me.toastr.warning('El campo de género es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de género es obligatorio.');
       return false;
     }
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.birthCertificate.orc)) {
-      me.toastr.warning('El campo de ORC es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de ORC es obligatorio.');
       return false;
     }
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.birthCertificate.libro)) {
-      me.toastr.warning('El campo de libro es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de libro es obligatorio.');
       return false;
     }
 
     if (!ValidateUtil.nonEmpty(me.currFaithful.birthCertificate.partida)) {
-      me.toastr.warning('El campo de partida es obligatorio.');
+      me.showMessage('warn', 'Advertencia', 'El campo de partida es obligatorio.');
       return false;
     }
 
@@ -318,6 +269,11 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToFaithfulList() {
+    const me = this;
+    me.router.navigate(['sacraments', 'faithful']);
+  }
+
   filterFatherData(event) {
     const me = this;
     me.faithfulFatherData = me.faithful.filter(
@@ -334,5 +290,11 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
         return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1 && parseInt(me.account.sub, 10) != data.id;
       }
     );
+  }
+
+  showMessage(severity, summary, detail) {
+    const me = this;
+    me.messages = [];
+    me.messages.push({severity: severity, summary: summary, detail: detail});
   }
 }

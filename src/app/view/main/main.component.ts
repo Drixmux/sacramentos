@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-// import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 // import {Observable} from "rxjs";
 
 @Component({

@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { AccountService } from '../../services/account.service';
 import { UserService } from '../../services/user.service';
-// import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 // import {Observable} from "rxjs";
 
 @Component({

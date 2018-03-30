@@ -1,3 +1,5 @@
+<p-growl [(value)]="messages"></p-growl>
+<p-confirmDialog></p-confirmDialog>
 <div class="container">
   <br/>
   <nav class="amber darken-4">
@@ -8,6 +10,11 @@
     </div>
   </nav>
   <br/>
+  <div class="row">
+    <div class="col s12">
+      <p-breadcrumb [home]="breadcrumbHome" [model]="breadcrumbItems"></p-breadcrumb>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <p-table #tt [columns]="headers" [value]="faithful" [paginator]="true" [rows]="quantity" [loading]="loading">
@@ -54,7 +61,7 @@
             <td> {{ faithful.genero }} </td>
             <td *ngIf="canUpdateFaithful || canDeleteFaithful || canSeePdfFaithful">
               <p-button icon="fa fa-fw fa-edit" styleClass="ui-button-warning" *ngIf="canUpdateFaithful"></p-button>
-              <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger" *ngIf="canDeleteFaithful"></p-button>
+              <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger" (onClick)="confirmDeleteModal(faithful)" *ngIf="canDeleteFaithful"></p-button>
               <p-button icon="fa fa-fw fa-print" *ngIf="canSeePdfFaithful"></p-button>
             </td>
           </tr>

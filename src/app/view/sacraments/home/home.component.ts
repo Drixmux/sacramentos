@@ -6,7 +6,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { AccountService } from '../../../services/account.service';
 import { UserService } from '../../../services/user.service';
-// import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+
+import { MenuItem } from 'primeng/api';
+
 // import {Observable} from "rxjs";
 
 @Component({
@@ -19,6 +21,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   account: Account;
 
+  breadcrumbHome: MenuItem;
+  breadcrumbItems: MenuItem[];
+
   constructor(
     private accountService: AccountService,
     private userService: UserService
@@ -27,6 +32,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     me.END_subscription$ = new Subject<boolean>();
     me.account$ = me.accountService.account$.takeUntil(me.END_subscription$);
     me.user$ = me.userService.user$.takeUntil(me.END_subscription$);
+
+    me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
+    me.breadcrumbItems = [];
 
     me.account = {
       sub: '',

@@ -1,11 +1,11 @@
-import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-// import {Observable} from "rxjs";
 
 import { Account } from '../../app.store.model';
 
 import { AccountService } from '../../services/account.service';
+
+import { Message } from 'primeng/components/common/api';
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -27,9 +27,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   password: string;
 
   loading: Boolean;
+
+  messages: Message[];
+
   constructor(
-    private toastr: ToastsManager,
-    private vcr: ViewContainerRef,
     private accountService: AccountService,
     private router: Router
   ) {
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     me.password = '';
     me.loading = false;
 
-    me.toastr.setRootViewContainerRef(vcr);
+    me.messages = [];
   }
 
   ngOnInit() {
@@ -56,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               me.router.navigate(['sacraments','home']);
             } else if(data['account']['msg']) {
               me.loading = false;
-              me.toastr.error(data['account']['msg']);
+              me.showMessage('error', 'Error', data['account']['msg']);
             }
           }
         }
@@ -80,5 +81,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         'get_hash': true
       });
     }
+  }
+
+  showMessage(severity, summary, detail) {
+    const me = this;
+    me.messages = [];
+    me.messages.push({severity: severity, summary: summary, detail: detail});
   }
 }

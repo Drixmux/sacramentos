@@ -39,7 +39,7 @@ export class HttpService {
 
   delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
     const me = this;
-    return me.intercept(me._http.delete(url, options));
+    return me.intercept(me._http.delete(url, me.getRequestOptionArgs(options)));
   }
 
   getRequestOptionArgs(options?: RequestOptionsArgs, qparams?: Object): RequestOptionsArgs {
