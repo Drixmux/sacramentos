@@ -17,9 +17,12 @@
               Registros: {{ quantity }}
               <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="quantity" [min]="5" [max]="100" [step]="5"></p-slider>
             </div>
-            <div class="ui-g-9 ui-sm-12">
+            <div class="ui-g-8 ui-sm-11">
               <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" placeholder="Global Filter" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              <input type="text" pInputText size="50" placeholder="Busqueda global" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+            <div class="ui-g-1 ui-sm-1">
+              <p-button icon="fa fa-fw fa-plus" styleClass="ui-button-success"></p-button>
             </div>
           </div>
         </ng-template>

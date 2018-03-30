@@ -42,6 +42,28 @@ export interface Certificate {
   user: User;
   sacrament: Sacrament;
 }
+export interface BirthCertificate {
+  id: number;
+  orc: string;
+  libro: string;
+  partida: string;
+  fechaCreacion: string
+}
+export interface Faithful {
+  id: number;
+  ci: string;
+  nombres: string;
+  apellidoMaterno: string;
+  apellidoPaterno: string;
+  nombreCompleto: string;
+  celular: string;
+  facebook: string;
+  fechaNacimiento: string;
+  genero: string;
+  procedencia: string;
+  fechaCreacion: string;
+  birthCertificate: BirthCertificate;
+}
 export interface Header {
   header: string;
   field: string;

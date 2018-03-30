@@ -13,22 +13,21 @@
       </div>
 
       <div class="row margin">
-        <div class="input-field col s12">
-          <i class="mdi-social-person-outline prefix"></i>
-          <input id="email" name="email" type="text" [(ngModel)]="email" autofocus>
-          <label for="email" class="center-align"> Correo </label>
+        <div class="ui-inputgroup col s12">
+          <span class="ui-inputgroup-addon"><i class="mdi-social-person-outline prefix small"></i></span>
+          <input id="email" type="text" pInputText [(ngModel)]="email" placeholder="Correo" autofocus>
         </div>
       </div><br>
       <div class="row margin">
-        <div class="input-field col s12">
-          <i class="mdi-action-lock-outline prefix"></i>
-          <input id="password" name="password" type="password" [(ngModel)]="password">
-          <label for="password"> Contraseña </label>
+        <div class="ui-inputgroup col s12">
+          <span class="ui-inputgroup-addon"><i class="mdi-action-lock-outline prefix small"></i></span>
+          <input id="password" type="password" pInputText [(ngModel)]="password" placeholder="Contraseña">
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <button class="btn waves-effect waves-light col s12" (click)="loginWithHash()"> Acceder </button>
+          <button class="btn waves-effect waves-light col s12" (click)="loginWithHash()" [disabled]="loading"> Acceder </button>
+          <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
         </div>
       </div>
       <br/><br/><br/>

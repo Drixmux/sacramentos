@@ -26,10 +26,12 @@
         "assets/materialize-admin/css/custom/custom.css",
         "../node_modules/font-awesome/css/font-awesome.min.css",
         "../node_modules/primeng/resources/themes/omega/theme.scss",
-        "../node_modules/primeng/resources/primeng.min.css"
+        "../node_modules/primeng/resources/primeng.min.css",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css"
       ],
       "scripts": [
         "assets/materialize-admin/js/plugins/jquery-1.11.2.min.js",
+        "assets/materialize-admin/js/plugins/jquery-ui.custom.js",
         "assets/materialize-admin/js/materialize.js",
         "assets/materialize-admin/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js",
         "assets/materialize-admin/js/plugins.js",

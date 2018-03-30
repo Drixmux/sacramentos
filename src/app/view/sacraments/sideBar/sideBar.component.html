@@ -46,6 +46,49 @@
         <i class="mdi-action-dashboard"></i> Inicio
       </a>
     </li>
+    <li class="bold">
+      <a [routerLink]="['/sacraments/faithful']" class="waves-effect waves-cyan">
+        <i class="mdi-social-group"></i> Fieles
+      </a>
+    </li>
+    <li class="no-padding">
+      <ul class="collapsible collapsible-accordion">
+        <li class="bold">
+          <a class="collapsible-header waves-effect waves-cyan">
+            <i class="mdi-file-folder-shared"></i>
+            Sacramentos
+          </a>
+          <div class="collapsible-body" style="">
+            <ul>
+              <li>
+                <a [routerLink]="['/sacraments/baptism']" class="waves-effect waves-cyan">
+                  <i class=" mdi-editor-format-color-fill"></i>
+                  Bautizo
+                </a>
+              </li>
+              <li>
+                <a [routerLink]="['/sacraments/communion']" class="waves-effect waves-cyan">
+                  <i class="mdi-action-accessibility"></i>
+                  P. Comunión
+                </a>
+              </li>
+              <li>
+                <a [routerLink]="['/sacraments/confirmation']" class="waves-effect waves-cyan">
+                  <i class="mdi-social-whatshot"></i>
+                  Confirmación
+                </a>
+              </li>
+              <li>
+                <a [routerLink]="['/sacraments/marriage']" class="waves-effect waves-cyan">
+                  <i class="mdi-action-favorite"></i>
+                  Matrimonio
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
     <ng-container *ngIf="!!account; then UserOptions; else NoUserOptions;"></ng-container>
     <ng-template #UserOptions>
       <li class="bold">
@@ -53,130 +96,6 @@
           <i class="mdi-communication-email"></i> Enviar Email's
         </a>
       </li>
-
-      <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li class="bold">
-            <a class="collapsible-header waves-effect waves-cyan">
-              <i class="mdi-social-group"></i> Fieles
-            </a>
-            <div class="collapsible-body" style="">
-              <ul>
-                <li>
-                  <a href="users/faithfulRegister" class="waves-effect waves-cyan">
-                    <i class="mdi-social-person-add"></i> Registro de Fiel
-                  </a>
-                </li>
-                <li>
-                  <a href="faithful/faithfulList" class="waves-effect waves-cyan">
-                    <i class="mdi-action-search"></i>Busqueda Fiel
-                  </a>
-                </li>
-                <li>
-                  <a href="users/listFiel" class="waves-effect waves-cyan">
-                    <i class="mdi-content-content-paste"></i>Lista de Fiel
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-
-      <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-file-folder-shared"></i> Registro Canónico</a>
-            <div class="collapsible-body" style="">
-              <ul>
-                <li><a href="baptism/baptismCreate"><i class=" mdi-editor-format-color-fill"></i>Bautizo</a>
-                </li>
-                <li><a href="firstCommunion"><i class="mdi-action-accessibility"></i>P. Comunión</a>
-                </li>
-                <li><a href="confirmacion"><i class="mdi-social-whatshot"></i>Confirmación</a>
-                </li>
-                <li><a href="Matrimonio"><i class="mdi-action-favorite"></i>Matrimonio</a>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-      <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-content-content-paste"></i> Lista de Sacramentos</a>
-            <div class="collapsible-body" style="">
-              <ul>
-                <li><a href="baptism/listBaptism"><i class=" mdi-editor-format-color-fill"></i>Bautizados</a>
-                </li>
-                <li><a href="firstCommunion/listComunion"><i class="mdi-action-accessibility"></i>P. Comunión</a>
-                </li>
-                <li><a href="confirmacion/listConfirmacion"><i class="mdi-social-whatshot"></i>Confirmados</a>
-                </li>
-                <li><a href="matrimonio/listMarried"><i class="mdi-action-favorite"></i>Casados</a>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-
-      <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-social-person-add"></i>Usuarios</a>
-            <div class="collapsible-body" style="">
-              <ul>
-                <li class="bold"><a href="users/usuarioRegister" class="waves-effect waves-cyan"><i class="mdi-social-person-add"></i>Usuario</a>
-                </li>
-                <li class="bold"><a href="users/listUser" class="waves-effect waves-cyan"><i class="mdi-content-content-paste"></i>Cuenta Usuarios</a>
-                </li>
-                <li class="bold"><a href="jurisdiccion/parroquiaAccount" class="waves-effect waves-cyan"><i class="mdi-social-person-add"></i>Parroquia</a>
-                </li>
-                <li class="bold"><a href="users/listParroquia" class="waves-effect waves-cyan"><i class="mdi-content-content-paste"></i>Cuenta Parroquias</a>
-                </li>
-                <!--<li class="bold"><a href="app-calendar.html" class="waves-effect waves-cyan"><i class="mdi-action-find-in-page"></i> Buscar Parroco</a>
-                </li>-->
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-
-      <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-image-nature-people"></i>Sacerdotes</a>
-            <div class="collapsible-body" style="">
-              <ul>
-                <li class="bold"><a href="users/sacerdoteRegister" class="waves-effect waves-cyan"><i class="mdi-content-add"></i>Sacerdote</a>
-                </li>
-                <li class="bold"><a href="users/listSacerdote" class="waves-effect waves-cyan"><i class="mdi-action-perm-contact-cal"></i>Cuenta Sacerdotes</a>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-      <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-social-location-city"></i>Parroquias</a>
-            <div class="collapsible-body" style="">
-              <ul>
-                <li class="bold"><a href="Jurisdiccion/parroquiaCreate" class="waves-effect waves-cyan"><i class="mdi-social-location-city"></i> Registrar Parroquia</a>
-                </li>
-                <li class="bold"><a href="Jurisdiccion/listParroquia" class="waves-effect waves-cyan"><i class="mdi-content-content-paste "></i> Lista Parroquia</a>
-                </li>
-                <!-- <li class="bold"><a href="#" class="waves-effect waves-cyan"><i class="mdi-action-find-in-page"></i> Buscar Parroquia</a>
-                 </li>-->
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-      <li class="bold"><a href="faithful/faithfulList" class="waves-effect waves-cyan"><i class="mdi-action-pageview"></i>Realizar Busqueda</a>
-      </li>
-      <li class="li-hover"><div class="divider"></div></li><br>
-      <li><a href="login/logout"><i class="mdi-action-settings-power"></i>CERRAR SESIÓN</a>
-      </li>
-      <li class="li-hover"><div class="divider"></div></li>
     </ng-template>
     <ng-template #NoUserOptions>
       <li class="bold">
@@ -186,8 +105,6 @@
       </li>
     </ng-template>
     <br>
-
-
     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;">
       <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
     </div>

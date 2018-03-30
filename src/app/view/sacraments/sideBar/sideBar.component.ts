@@ -36,6 +36,7 @@ export class SideBarComponent implements OnInit, OnDestroy, AfterViewInit {
       data => {
         if (data && data['account']) {
           me.account = data['account'];
+          me.initJquery();
         }
       }, error => {
         me.accountService.logOut({});

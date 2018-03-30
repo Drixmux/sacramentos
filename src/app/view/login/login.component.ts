@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-// import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 // import {Observable} from "rxjs";
 
 import { Account } from '../../app.store.model';
@@ -26,7 +26,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   email: string;
   password: string;
 
+  loading: Boolean;
   constructor(
+    private toastr: ToastsManager,
+    private vcr: ViewContainerRef,
     private accountService: AccountService,
     private router: Router
   ) {
@@ -36,6 +39,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     me.email = '';
     me.password = '';
+    me.loading = false;
+
+    me.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
@@ -46,10 +52,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (data['status'] === 'success') {
             if (data['account']['token']) {
               window.sessionStorage.setItem('userSession', data['account']['token']);
-              me.router.navigate(['sacraments']);
+              me.loading = false;
+              me.router.navigate(['sacraments','home']);
+            } else if(data['account']['msg']) {
+              me.loading = false;
+              me.toastr.error(data['account']['msg']);
             }
-          } else {
-            // TODO toaster to show error
           }
         }
       }
@@ -65,6 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginWithHash() {
     const me = this;
     if (me.email !== null && me.password !== null) {
+      me.loading = true;
       me.accountService.logIn({
         'email': me.email,
         'password': me.password,

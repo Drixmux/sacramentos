@@ -1,0 +1,68 @@
+<div class="container">
+  <br/>
+  <nav class="amber darken-4">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <h1 class="brand-logo center">Lista de Fieles</h1>
+      </div>
+    </div>
+  </nav>
+  <br/>
+  <div class="row">
+    <div class="col">
+      <p-table #tt [columns]="headers" [value]="faithful" [paginator]="true" [rows]="quantity" [loading]="loading">
+        <ng-template pTemplate="caption">
+          <div class="ui-g">
+            <div class="ui-g-3 ui-sm-10 ui-sm-offset-1">
+              Registros: {{ quantity }}
+              <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="quantity" [min]="5" [max]="100" [step]="5"></p-slider>
+            </div>
+            <ng-container *ngIf="canCreateFaithful;then createContainer; else noCreateContainer;"></ng-container>
+            <ng-template #createContainer>
+              <div class="ui-g-8 ui-sm-11">
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" placeholder="Busqueda global" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              </div>
+              <div class="ui-g-1 ui-sm-1">
+                <p-button icon="fa fa-fw fa-plus" styleClass="ui-button-success" [routerLink]="['/sacraments/faithful/create']" ></p-button>
+              </div>
+            </ng-template>
+            <ng-template #noCreateContainer>
+              <div class="ui-g-9 ui-sm-12">
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" placeholder="Busqueda global" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              </div>
+            </ng-template>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th *ngFor="let header of headers"
+                [pSortableColumn]="header.field">
+              {{ header.header }}
+              <p-sortIcon [field]="header.field"></p-sortIcon>
+            </th>
+            <th *ngIf="canUpdateFaithful || canDeleteFaithful || canSeePdfFaithful"> Opciones </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-faithful>
+          <tr>
+            <td> {{ faithful.nombres }} </td>
+            <td> {{ faithful.apellidoPaterno }} </td>
+            <td> {{ faithful.apellidoMaterno }} </td>
+            <td> {{ faithful.fechaNacimiento }} </td>
+            <td> {{ faithful.genero }} </td>
+            <td *ngIf="canUpdateFaithful || canDeleteFaithful || canSeePdfFaithful">
+              <p-button icon="fa fa-fw fa-edit" styleClass="ui-button-warning" *ngIf="canUpdateFaithful"></p-button>
+              <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger" *ngIf="canDeleteFaithful"></p-button>
+              <p-button icon="fa fa-fw fa-print" *ngIf="canSeePdfFaithful"></p-button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Existen {{ faithful.length }} fieles.
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
