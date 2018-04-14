@@ -7,7 +7,7 @@ import { Faithful } from '../app.store.model';
 import { RedirectService } from './redirect.service';
 import { HttpService } from './http.service';
 import { AppStore } from '../app.store';
-import { LOAD_ALL_FAITHFUL, CREATE_FAITHFUL, DELETE_FAITHFUL } from '../reducers/faithful.reducer';
+import { LOAD_ALL_FAITHFUL, LOAD_FAITHFUL, CREATE_FAITHFUL, UPDATE_FAITHFUL, DELETE_FAITHFUL } from '../reducers/faithful.reducer';
 
 import 'rxjs/add/operator/map';
 
@@ -32,9 +32,29 @@ export class FaithfulService extends HttpService {
       });
   }
 
+  getFaithful(params: Object) {
+    const me = this;
+    return me.get(me.serviceURL + '/faithful/getFaithful/' + params['faithfulId']).map(payload => ({type: LOAD_FAITHFUL, payload: payload}))
+      .subscribe(action => {
+        if ( (action.payload as any).length !== 0 ) {
+          me.store.dispatch(action);
+        }
+      });
+  }
+
   addFaithful(params: Object) {
     const me = this;
     return me.post(me.serviceURL + '/faithful/createFaithful', params).map(payload => ({type: CREATE_FAITHFUL, payload: payload}))
+      .subscribe(action => {
+        if ( (action.payload as any).length !== 0 ) {
+          me.store.dispatch(action);
+        }
+      });
+  }
+
+  updateFaithful(id: number,params: Object) {
+    const me = this;
+    return me.put(me.serviceURL + '/faithful/updateFaithful/' + id, params).map(payload => ({type: UPDATE_FAITHFUL, payload: payload}))
       .subscribe(action => {
         if ( (action.payload as any).length !== 0 ) {
           me.store.dispatch(action);

@@ -14,7 +14,7 @@ import { ConfirmationService } from 'primeng/api';
 
 import { Message } from 'primeng/components/common/api';
 
-import {LOAD_ALL_FAITHFUL, CREATE_FAITHFUL, DELETE_FAITHFUL} from '../../../reducers/faithful.reducer';
+import {LOAD_ALL_FAITHFUL, CREATE_FAITHFUL, DELETE_FAITHFUL, UPDATE_FAITHFUL } from '../../../reducers/faithful.reducer';
 
 import { Permissions } from '../../../constants';
 
@@ -128,6 +128,7 @@ export class FaithfulComponent implements OnInit, OnDestroy {
         switch (data['type']) {
           case LOAD_ALL_FAITHFUL:
           case CREATE_FAITHFUL:
+          case UPDATE_FAITHFUL:
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
               me.faithful = data['payload']['faithful'];
               me.loading = false;

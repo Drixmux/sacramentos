@@ -31,7 +31,7 @@
                 <input type="text" pInputText size="50" placeholder="Busqueda global" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
               </div>
               <div class="ui-g-1 ui-sm-1">
-                <p-button icon="fa fa-fw fa-plus" styleClass="ui-button-success" [routerLink]="['/sacraments/faithful/create']" ></p-button>
+                <p-button icon="fa fa-fw fa-plus" styleClass="ui-button-success" [routerLink]="['/sacraments', 'faithful', 'create']" ></p-button>
               </div>
             </ng-template>
             <ng-template #noCreateContainer>
@@ -60,7 +60,7 @@
             <td> {{ faithful.fechaNacimiento }} </td>
             <td> {{ faithful.genero }} </td>
             <td *ngIf="canUpdateFaithful || canDeleteFaithful || canSeePdfFaithful">
-              <p-button icon="fa fa-fw fa-edit" styleClass="ui-button-warning" *ngIf="canUpdateFaithful"></p-button>
+              <p-button icon="fa fa-fw fa-edit" styleClass="ui-button-warning" [routerLink]="['/sacraments', 'faithful', 'update', faithful.id]" *ngIf="canUpdateFaithful"></p-button>
               <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger" (onClick)="confirmDeleteModal(faithful)" *ngIf="canDeleteFaithful"></p-button>
               <p-button icon="fa fa-fw fa-print" *ngIf="canSeePdfFaithful"></p-button>
             </td>

@@ -20,6 +20,7 @@ import { SideBarComponent } from './view/sacraments/sideBar/sideBar.component';
 
 import { FaithfulComponent } from './view/sacraments/faithfull/faithful.component';
 import { FaithfulCreateComponent } from './view/sacraments/faithfull/faithfulCreate/faithfulCreate.component';
+import { FaithfulUpdateComponent } from './view/sacraments/faithfull/faithfulUpdate/faithfulUpdate.component';
 
 import { HomeComponent } from './view/sacraments/home/home.component';
 import { BaptismComponent } from './view/sacraments/baptism/baptism.component';
@@ -98,6 +99,7 @@ const PRIMENG_MODULES = [
     SideBarComponent,
     FaithfulComponent,
     FaithfulCreateComponent,
+    FaithfulUpdateComponent,
     HomeComponent,
     BaptismComponent,
     CommunionComponent,

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
 import { Account, User, Faithful, Header } from '../../../../app.store.model';
@@ -11,18 +11,19 @@ import { FaithfulService } from '../../../../services/faithful.service';
 
 import { Message } from 'primeng/components/common/api';
 
-import { LOAD_ALL_FAITHFUL, CREATE_FAITHFUL } from '../../../../reducers/faithful.reducer';
+import { LOAD_FAITHFUL, UPDATE_FAITHFUL } from '../../../../reducers/faithful.reducer';
 
 import { ValidateUtil } from '../../../../utils/validate.service';
 
 import { MenuItem, SelectItem } from 'primeng/api';
+import {toInt} from 'ngx-bootstrap/bs-moment/utils/type-checks';
 
 // import {Observable} from "rxjs";
 
 @Component({
-  templateUrl: './faithfulCreate.component.html'
+  templateUrl: './faithfulUpdate.component.html'
 })
-export class FaithfulCreateComponent implements OnInit, OnDestroy {
+export class FaithfulUpdateComponent implements OnInit, OnDestroy {
   user$: Observable<User>;
   faithful$: Observable<Faithful[]>;
   END_subscription$: Subject<boolean>;
@@ -30,12 +31,13 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
   account: Account;
   headers: Header[];
   currFaithful: Faithful;
+  currFaithfulBirthday: Date;
   calendarEs: any;
   faithful: Faithful[];
-  faithfulFather: Faithful;
-  faithfulFatherData: Faithful[];
-  faithfulMother: Faithful;
-  faithfulMotherData: Faithful[];
+  faithfulFather: any;
+  faithfulFatherData: any[];
+  faithfulMother: any;
+  faithfulMotherData: any[];
   genre: SelectItem[];
 
   breadcrumbHome: MenuItem;
@@ -46,6 +48,7 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
   messages: Message[];
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
     private accountService: AccountService,
@@ -61,7 +64,7 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
     me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
     me.breadcrumbItems = [
       {label:'Fieles', routerLink: ['/sacraments', 'faithful']},
-      {label:'Registro'}
+      {label:'Edición'}
     ];
 
     me.loading = false;
@@ -138,24 +141,22 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
     me.faithful$.subscribe(
       data => {
         switch (data['type']) {
-          case LOAD_ALL_FAITHFUL:
+          case LOAD_FAITHFUL:
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
-              me.faithful = data['payload']['faithful'];
+              me.currFaithful = data['payload']['faithful'];
+              me.currFaithfulBirthday = (me.currFaithful.fechaNacimiento != null) ? new Date(me.currFaithful.fechaNacimiento) : null;
             }
             break;
-          case CREATE_FAITHFUL:
+          case UPDATE_FAITHFUL:
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
-              me.loading = false;
               me.faithful = data['payload']['faithful'];
               me.router.navigate(['sacraments', 'faithful']);
-            } else if(data['payload'] && data['payload']['status'] && data['payload']['status'] == 'error' && data['payload']['msg']) {
-              me.showMessage('error', 'Error', data['payload']['msg']);
-              me.loading = false;
             }
             break;
         }
       }
     );
+    me.faithfulService.getFaithful({'faithfulId': me.route.snapshot.paramMap.get('faithfulId')});
   }
 
   ngOnDestroy() {
@@ -240,7 +241,7 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
     me.currFaithful.fechaNacimiento = me.getFormatedDate(event);
   }
 
-  addFaithful() {
+  editFaithful() {
     const me = this;
     if (me.validateData(me.currFaithful)) {
       me.loading = true;
@@ -253,6 +254,7 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
         'procedencia': me.currFaithful.procedencia,
         'genero': me.currFaithful.genero,
         'fechaCreacion': me.currFaithful.fechaCreacion,
+        'birthCertificateId': me.currFaithful.birthCertificate.id,
         'orc': me.currFaithful.birthCertificate.orc,
         'libro': me.currFaithful.birthCertificate.libro,
         'partida': me.currFaithful.birthCertificate.partida
@@ -265,7 +267,7 @@ export class FaithfulCreateComponent implements OnInit, OnDestroy {
         params['madreId'] = me.faithfulMother.id;
       }
 
-      me.faithfulService.addFaithful(params);
+      me.faithfulService.updateFaithful(me.currFaithful.id, params);
     }
   }
 

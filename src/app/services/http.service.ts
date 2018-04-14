@@ -32,7 +32,7 @@ export class HttpService {
     return me.intercept(me._http.post(url, body, me.getRequestOptionArgs(options)));
   }
 
-  put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+  put(url: string, body: Object, options?: RequestOptionsArgs): Observable<Response> {
     const me = this;
     return me.intercept(me._http.put(url, body, me.getRequestOptionArgs(options)));
   }
