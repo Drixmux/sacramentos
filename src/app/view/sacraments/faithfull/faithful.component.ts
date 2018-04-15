@@ -161,7 +161,7 @@ export class FaithfulComponent implements OnInit, OnDestroy {
       icon: 'fa fa-trash',
       accept: () => {
         me.loading = true;
-        me.faithfulService.deleteFaithful({ 'id': faithful.id });
+        me.faithfulService.deleteFaithful(faithful.id, {});
       }
     });
   }

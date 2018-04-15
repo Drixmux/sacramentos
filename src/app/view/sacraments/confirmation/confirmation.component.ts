@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../services/user.service';
 import { AccountService } from '../../../services/account.service';
 import { CertificateService } from '../../../services/certificate.service';
+import {LOAD_ALL_FAITHFUL} from '../../../reducers/faithful.reducer';
 
 // import {Observable} from "rxjs";
 
@@ -81,13 +82,17 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
     );
     me.certificates$.subscribe(
       data => {
-        if (data && data['status'] && data['status'] == 'success') {
-          me.certificates = data['certificates'];
-          me.loading = false;
+        switch (data['type']) {
+          case LOAD_ALL_FAITHFUL:
+            if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
+              me.certificates = data['payload']['certificates'];
+              me.loading = false;
+            }
+            break;
         }
       }
     );
-    me.certificateService.getCertificates({
+    me.certificateService.getAllCertificates({
       sacramentId: 3
     });
   }

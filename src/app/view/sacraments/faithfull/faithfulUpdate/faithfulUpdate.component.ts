@@ -156,7 +156,7 @@ export class FaithfulUpdateComponent implements OnInit, OnDestroy {
         }
       }
     );
-    me.faithfulService.getFaithful({'faithfulId': me.route.snapshot.paramMap.get('faithfulId')});
+    me.faithfulService.getFaithful(parseInt(me.route.snapshot.paramMap.get('faithfulId')), {});
   }
 
   ngOnDestroy() {

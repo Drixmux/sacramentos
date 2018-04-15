@@ -32,9 +32,9 @@ export class FaithfulService extends HttpService {
       });
   }
 
-  getFaithful(params: Object) {
+  getFaithful(id: number, qparams: Object) {
     const me = this;
-    return me.get(me.serviceURL + '/faithful/getFaithful/' + params['faithfulId']).map(payload => ({type: LOAD_FAITHFUL, payload: payload}))
+    return me.get(me.serviceURL + '/faithful/getFaithful/' + id, {}, qparams).map(payload => ({type: LOAD_FAITHFUL, payload: payload}))
       .subscribe(action => {
         if ( (action.payload as any).length !== 0 ) {
           me.store.dispatch(action);
@@ -52,7 +52,7 @@ export class FaithfulService extends HttpService {
       });
   }
 
-  updateFaithful(id: number,params: Object) {
+  updateFaithful(id: number, params: Object) {
     const me = this;
     return me.put(me.serviceURL + '/faithful/updateFaithful/' + id, params).map(payload => ({type: UPDATE_FAITHFUL, payload: payload}))
       .subscribe(action => {
@@ -62,9 +62,9 @@ export class FaithfulService extends HttpService {
       });
   }
 
-  deleteFaithful(params: Object) {
+  deleteFaithful(id: number, params: Object) {
     const me = this;
-    return me.delete(me.serviceURL + '/faithful/deleteFaithful/' + params['id']).map(payload => ({type: DELETE_FAITHFUL, payload: payload}))
+    return me.delete(me.serviceURL + '/faithful/deleteFaithful/' + id).map(payload => ({type: DELETE_FAITHFUL, payload: payload}))
       .subscribe(action => {
         if ( (action.payload as any).length !== 0 ) {
           me.store.dispatch(action);
