@@ -14,6 +14,9 @@ export class HttpService {
 
   // public serviceURL = 'http://localhost/ceb-api/web';
   public serviceURL = 'http://api.pastoraldigital.net';
+  public siicServiceURL = 'http://siic.pastoraldigital.net';
+
+  public siicServiceToken = '$2y$04$vpEfQxLqYBtHEZhNsdDsxuc49FR2u7kmlhFJ4.MFnIVOE7KQniZT6';
 
   constructor(public _http: Http, private _redirectService: RedirectService) {}
 

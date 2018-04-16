@@ -10,7 +10,6 @@ import { AppStore } from '../app.store';
 import { LOAD_ALL_CERTIFICATES, LOAD_CERTIFICATE, CREATE_CERTIFICATE, UPDATE_CERTIFICATE, DELETE_CERTIFICATE } from '../reducers/certificate.reducer';
 
 import 'rxjs/add/operator/map';
-import {DELETE_FAITHFUL, LOAD_FAITHFUL} from '../reducers/faithful.reducer';
 
 @Injectable()
 export class CertificateService extends HttpService {

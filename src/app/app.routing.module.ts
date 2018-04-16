@@ -8,6 +8,7 @@ import { FaithfulComponent } from './view/sacraments/faithfull/faithful.componen
 import { FaithfulCreateComponent } from './view/sacraments/faithfull/faithfulCreate/faithfulCreate.component';
 import { FaithfulUpdateComponent } from './view/sacraments/faithfull/faithfulUpdate/faithfulUpdate.component';
 import { BaptismComponent } from './view/sacraments/baptism/baptism.component';
+import { BaptismCreateComponent } from './view/sacraments/baptism/baptismCreate/baptismCreate.component';
 import { CommunionComponent } from './view/sacraments/communion/communion.component';
 import { ConfirmationComponent } from './view/sacraments/confirmation/confirmation.component';
 import { MarriageComponent } from './view/sacraments/marriage/marriage.component';
@@ -57,6 +58,12 @@ const APP_ROUTES: Routes = [
           }, {
             path: 'baptism',
             component: BaptismComponent,
+            resolve: {
+              userSession: MainResolver
+            }
+          }, {
+            path: 'baptism/create',
+            component: BaptismCreateComponent,
             resolve: {
               userSession: MainResolver
             }

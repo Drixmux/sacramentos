@@ -64,6 +64,10 @@ export interface Faithful {
   fechaCreacion: string;
   birthCertificate: BirthCertificate;
 }
+export interface Work {
+  id: number;
+  nombre: string;
+}
 export interface Header {
   header: string;
   field: string;

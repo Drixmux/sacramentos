@@ -9,6 +9,7 @@ import { account } from './reducers/account.reducer';
 import { user } from './reducers/user.reducer';
 import { certificate } from './reducers/certificate.reducer';
 import { faithful } from './reducers/faithful.reducer';
+import { work } from './reducers/work.reducer';
 
 import { AppRoutingModule } from './app.routing.module';
 
@@ -24,6 +25,8 @@ import { FaithfulUpdateComponent } from './view/sacraments/faithfull/faithfulUpd
 
 import { HomeComponent } from './view/sacraments/home/home.component';
 import { BaptismComponent } from './view/sacraments/baptism/baptism.component';
+import { BaptismCreateComponent } from './view/sacraments/baptism/baptismCreate/baptismCreate.component';
+
 import { CommunionComponent } from './view/sacraments/communion/communion.component';
 import { ConfirmationComponent } from './view/sacraments/confirmation/confirmation.component';
 import { MarriageComponent } from './view/sacraments/marriage/marriage.component';
@@ -36,6 +39,7 @@ import { AccountService } from './services/account.service';
 import { UserService } from './services/user.service';
 import { CertificateService } from './services/certificate.service';
 import { FaithfulService } from './services/faithful.service';
+import { WorkService } from './services/work.service';
 
 import { AccountToolsService } from './utils/account.tools.service';
 import { ConfirmationService } from 'primeng/api';
@@ -64,7 +68,8 @@ const SERVICES = [
   AccountService,
   UserService,
   CertificateService,
-  FaithfulService
+  FaithfulService,
+  WorkService
 ];
 
 const UTILS = [
@@ -102,6 +107,7 @@ const PRIMENG_MODULES = [
     FaithfulUpdateComponent,
     HomeComponent,
     BaptismComponent,
+    BaptismCreateComponent,
     CommunionComponent,
     ConfirmationComponent,
     MarriageComponent,
@@ -117,7 +123,8 @@ const PRIMENG_MODULES = [
       account: account,
       user: user,
       certificate: certificate,
-      faithful: faithful
+      faithful: faithful,
+      work: work
     }),
     PRIMENG_MODULES
   ],

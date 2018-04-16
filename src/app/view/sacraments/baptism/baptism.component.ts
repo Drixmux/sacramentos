@@ -7,7 +7,14 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../services/user.service';
 import { AccountService } from '../../../services/account.service';
 import { CertificateService } from '../../../services/certificate.service';
-import {CREATE_FAITHFUL, DELETE_FAITHFUL, LOAD_ALL_FAITHFUL, UPDATE_FAITHFUL} from '../../../reducers/faithful.reducer';
+
+import { AccountToolsService } from '../../../utils/account.tools.service';
+
+import { LOAD_ALL_CERTIFICATES } from '../../../reducers/certificate.reducer';
+
+import { Permissions } from '../../../constants';
+
+import { MenuItem } from 'primeng/api';
 
 // import {Observable} from "rxjs";
 
@@ -23,10 +30,21 @@ export class BaptismComponent implements OnInit, OnDestroy {
   certificates: Certificate[];
   headers: Header[];
 
+  breadcrumbHome: MenuItem;
+  breadcrumbItems: MenuItem[];
+
   loading: boolean;
   quantity: number;
 
+  canCreateBaptism: Boolean;
+  canUpdateBaptism: Boolean;
+  canDeleteBaptism: Boolean;
+  canSeePdfBaptism: Boolean;
+
+  permissions;
+
   constructor(
+    private accountToolsService: AccountToolsService,
     private userService: UserService,
     private accountService: AccountService,
     private certificateService: CertificateService
@@ -38,6 +56,18 @@ export class BaptismComponent implements OnInit, OnDestroy {
 
     me.loading = true;
     me.quantity = 5;
+
+    me.permissions = Permissions;
+
+    me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
+    me.breadcrumbItems = [
+      {label:'Bautizo'}
+    ];
+
+    me.canCreateBaptism = false;
+    me.canUpdateBaptism = false;
+    me.canDeleteBaptism = false;
+    me.canSeePdfBaptism = false;
 
     me.account = {
       sub: '',
@@ -75,6 +105,10 @@ export class BaptismComponent implements OnInit, OnDestroy {
       data => {
         if (data && data['account']) {
           me.account = data['account'];
+          // me.canCreateBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_CREAR);
+          // me.canUpdateBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_EDITAR);
+          // me.canDeleteBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_BORRAR);
+          // me.canSeePdfBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_PDF);
         }
       }, error => {
         me.accountService.logOut({});
@@ -83,7 +117,7 @@ export class BaptismComponent implements OnInit, OnDestroy {
     me.certificates$.subscribe(
       data => {
         switch (data['type']) {
-          case LOAD_ALL_FAITHFUL:
+          case LOAD_ALL_CERTIFICATES:
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
               me.certificates = data['payload']['certificates'];
               me.loading = false;

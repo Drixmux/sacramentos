@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../services/user.service';
 import { AccountService } from '../../../services/account.service';
 import { CertificateService } from '../../../services/certificate.service';
-import {LOAD_ALL_FAITHFUL} from '../../../reducers/faithful.reducer';
+import { LOAD_ALL_CERTIFICATES } from '../../../reducers/certificate.reducer';
 
 // import {Observable} from "rxjs";
 
@@ -83,7 +83,7 @@ export class MarriageComponent implements OnInit, OnDestroy {
     me.certificates$.subscribe(
       data => {
         switch (data['type']) {
-          case LOAD_ALL_FAITHFUL:
+          case LOAD_ALL_CERTIFICATES:
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
               me.certificates = data['payload']['certificates'];
               me.loading = false;

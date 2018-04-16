@@ -1,0 +1,106 @@
+<p-growl [(value)]="messages"></p-growl>
+<div class="container">
+  <br/>
+  <nav class="amber darken-4">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <h1 class="brand-logo center">Registro de bautizo</h1>
+      </div>
+    </div>
+  </nav>
+  <br/>
+  <div class="row">
+    <div class="col s12">
+      <p-breadcrumb [home]="breadcrumbHome" [model]="breadcrumbItems"></p-breadcrumb>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <p-card title="Datos generales">
+        <hr/><br/>
+        <div class="row">
+          <div class="ui-float-label col s12 m12">
+            <p-autoComplete [(ngModel)]="faithful" [suggestions]="faithfulData" field="nombreCompleto" (completeMethod)="filterFaithfulData($event)" placeholder="Feligrés"></p-autoComplete>
+          </div>
+          <!--
+          <div class="ui-float-label col s12 m12 l12">
+            <input id="nombres" type="text" pInputText [(ngModel)]="currFaithful.nombres" class="validate">
+            <label for="nombres">Nombres (*)</label>
+            <br/>
+          </div>
+          -->
+        </div>
+        <div class="row">
+          <div class="ui-float-label col s12 m12">
+            <p-autoComplete [(ngModel)]="faithful" [suggestions]="faithfulData" field="nombreCompleto" (completeMethod)="filterFaithfulData($event)" placeholder="Feligrés"></p-autoComplete>
+          </div>
+          <!--
+          <div class="ui-float-label col s12 m6">
+            <input id="apellido_materno" type="text" pInputText [(ngModel)]="currFaithful.apellidoMaterno" class="validate">
+            <label for="apellido_materno">Apellido materno (*)</label>
+          </div>
+          -->
+        </div>
+        <!--
+        <div class="row">
+          <div class="col s12 m6">
+            <p-calendar [locale]="calendarEs" (onSelect)="setBirthdayDate($event)" [readonlyInput]="true" placeholder="Fecha de nacimiento (*)"></p-calendar>
+          </div>
+          <div class="ui-float-label col s12 m6">
+            <input id="carnet_identidad" type="number" pInputText [(ngModel)]="currFaithful.ci" class="validate">
+            <label for="carnet_identidad">Carnet de identidad</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="ui-float-label col s12 m8">
+            <input id="procedencia" type="text" pInputText [(ngModel)]="currFaithful.procedencia" class="validate">
+            <label for="procedencia">Procedencia (*)</label>
+          </div>
+          <div class="col s12 m4">
+            <p-dropdown [options]="genre" [(ngModel)]="currFaithful.genero" [style]="{'width':'100%'}"></p-dropdown>
+          </div>
+        </div>
+        -->
+      </p-card>
+      <!--
+      <p-card title="Datos de los padres">
+        <hr/><br/>
+        <div class="row">
+          <div class="ui-float-label col s12 m6">
+            <p-autoComplete [(ngModel)]="faithfulFather" [suggestions]="faithfulFatherData" field="nombreCompleto" (completeMethod)="filterFatherData($event)" placeholder="Padre"></p-autoComplete>
+          </div>
+          <div class="ui-float-label col s12 m6">
+            <p-autoComplete [(ngModel)]="faithfulMother" [suggestions]="faithfulMotherData" field="nombreCompleto" (completeMethod)="filterMotherData($event)" placeholder="Madre"></p-autoComplete>
+          </div>
+        </div>
+      </p-card>
+      <p-card title="Oficialía de registro civil (Certificado de nacimiento)">
+        <hr/><br/>
+        <div class="row">
+          <div class="ui-float-label col s12 m6 l4">
+            <input type="text" id="oficialia_orc" pInputText [(ngModel)]="currFaithful.birthCertificate.orc" class="validate">
+            <label for="oficialia_orc">ORC (*)</label>
+          </div>
+          <div class="ui-float-label col s12 m6 l4">
+            <input type="text" id="oficialia_libro" pInputText [(ngModel)]="currFaithful.birthCertificate.libro" class="validate">
+            <label for="oficialia_libro">Libro (*)</label>
+          </div>
+          <div class="ui-float-label col s12 m6 l4">
+            <input type="text" id="oficialia_partida" pInputText [(ngModel)]="currFaithful.birthCertificate.partida" class="validate">
+            <label for="oficialia_partida">Partida (*)</label>
+          </div>
+        </div>
+      </p-card>
+      <p-card>
+        <div class="row">
+          <div class="input-field col s12 center-align">
+            <p-button label="Registrar" styleClass="ui-button-success big-button" icon="fa fa-fw fa-check" (onClick)="addFaithful()" [disabled]="loading"></p-button>
+            <p-button label="Cancelar" styleClass="ui-button-warning big-button" (onClick)="goToFaithfulList()" [disabled]="loading"></p-button>
+            <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
+          </div>
+        </div>
+      </p-card>
+      -->
+    </div>
+  </div>
+</div>

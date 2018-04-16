@@ -14,7 +14,7 @@ import { ConfirmationService } from 'primeng/api';
 
 import { Message } from 'primeng/components/common/api';
 
-import {LOAD_ALL_FAITHFUL, CREATE_FAITHFUL, DELETE_FAITHFUL, UPDATE_FAITHFUL } from '../../../reducers/faithful.reducer';
+import { LOAD_ALL_FAITHFUL, CREATE_FAITHFUL, DELETE_FAITHFUL, UPDATE_FAITHFUL } from '../../../reducers/faithful.reducer';
 
 import { Permissions } from '../../../constants';
 

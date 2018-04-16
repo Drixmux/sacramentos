@@ -3,11 +3,16 @@
   <nav class="amber darken-4">
     <div class="nav-wrapper">
       <div class="col s12">
-        <h1 class="brand-logo center">Lista de Bautizados</h1>
+        <h1 class="brand-logo center">Lista de Bautizos</h1>
       </div>
     </div>
   </nav>
   <br/>
+  <div class="row">
+    <div class="col s12">
+      <p-breadcrumb [home]="breadcrumbHome" [model]="breadcrumbItems"></p-breadcrumb>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <p-table #tt [columns]="headers" [value]="certificates" [paginator]="true" [rows]="quantity" [loading]="loading">
@@ -17,13 +22,23 @@
               Registros: {{ quantity }}
               <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="quantity" [min]="5" [max]="100" [step]="5"></p-slider>
             </div>
-            <div class="ui-g-8 ui-sm-11">
-              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" placeholder="Busqueda global" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-            </div>
-            <div class="ui-g-1 ui-sm-1">
-              <p-button icon="fa fa-fw fa-plus" styleClass="ui-button-success"></p-button>
-            </div>
+
+            <ng-container *ngIf="canCreateBaptism;then createContainer; else noCreateContainer;"></ng-container>
+            <ng-template #createContainer>
+              <div class="ui-g-8 ui-sm-11">
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" placeholder="Busqueda global" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              </div>
+              <div class="ui-g-1 ui-sm-1">
+                <p-button icon="fa fa-fw fa-plus" styleClass="ui-button-success" [routerLink]="['/sacraments', 'baptism', 'create']"></p-button>
+              </div>
+            </ng-template>
+            <ng-template #noCreateContainer>
+              <div class="ui-g-9 ui-sm-12">
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" placeholder="Busqueda global" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              </div>
+            </ng-template>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -33,7 +48,7 @@
               {{ header.header }}
               <p-sortIcon [field]="header.field"></p-sortIcon>
             </th>
-            <th> Optiones </th>
+            <th *ngIf="false"> Optiones </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-certificate>
@@ -43,7 +58,7 @@
             <td> {{ certificate.user.apellidoMaterno }} </td>
             <td> {{ certificate.fecha }} </td>
             <td> {{ certificate.user.genero }} </td>
-            <td>
+            <td *ngIf="false">
               <p-button icon="fa fa-fw fa-edit" styleClass="ui-button-warning"></p-button>
               <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger"></p-button>
               <p-button icon="fa fa-fw fa-print"></p-button>
