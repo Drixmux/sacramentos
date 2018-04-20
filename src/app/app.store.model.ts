@@ -30,6 +30,14 @@ export interface Sacrament {
   sacramento: string;
   fechaCreacion: string;
 }
+export interface LibroParroquia {
+  id: number;
+  parroquiaId: number;
+  libro: string;
+  pagina: string;
+  numero: string;
+  fechaCreacion: string;
+}
 export interface Certificate {
   id: number;
   parroquiaId: number;
@@ -41,6 +49,7 @@ export interface Certificate {
   fechaCreacion: string;
   user: User;
   sacrament: Sacrament;
+  libroParroquia: LibroParroquia;
 }
 export interface BirthCertificate {
   id: number;
@@ -65,6 +74,14 @@ export interface Faithful {
   birthCertificate: BirthCertificate;
 }
 export interface Work {
+  id: number;
+  nombre: string;
+}
+export interface Jurisdiction {
+  id: number;
+  jurisdiccion: string;
+}
+export interface Priest {
   id: number;
   nombre: string;
 }

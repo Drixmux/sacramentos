@@ -280,7 +280,9 @@ export class FaithfulUpdateComponent implements OnInit, OnDestroy {
     const me = this;
     me.faithfulFatherData = me.faithful.filter(
       data => {
-        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1 && parseInt(me.account.sub, 10) != data.id;
+        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1
+          && me.currFaithful.id != data.id
+          && data.genero == 'masculino';
       }
     );
   }
@@ -289,7 +291,9 @@ export class FaithfulUpdateComponent implements OnInit, OnDestroy {
     const me = this;
     me.faithfulMotherData = me.faithful.filter(
       data => {
-        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1 && parseInt(me.account.sub, 10) != data.id;
+        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1
+          && me.currFaithful.id != data.id
+          && data.genero == 'femenino';
       }
     );
   }

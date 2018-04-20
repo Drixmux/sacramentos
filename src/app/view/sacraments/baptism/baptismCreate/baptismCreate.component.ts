@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
-import { Account, User, Faithful, Header, Certificate, Work } from '../../../../app.store.model';
+import { Account, User, Faithful, Header, Certificate, Work, Jurisdiction, Priest } from '../../../../app.store.model';
 import { Observable } from 'rxjs/Observable';
 
 import { UserService } from '../../../../services/user.service';
@@ -10,6 +10,8 @@ import { AccountService } from '../../../../services/account.service';
 import { FaithfulService } from '../../../../services/faithful.service';
 import { CertificateService } from '../../../../services/certificate.service';
 import { WorkService } from '../../../../services/work.service';
+import { JurisdictionService } from '../../../../services/jurisdiction.service';
+import { PriestService } from '../../../../services/priest.service';
 
 import { Message } from 'primeng/components/common/api';
 
@@ -19,6 +21,8 @@ import { ValidateUtil } from '../../../../utils/validate.service';
 
 import { MenuItem, SelectItem } from 'primeng/api';
 import { CREATE_CERTIFICATE, LOAD_ALL_CERTIFICATES } from '../../../../reducers/certificate.reducer';
+
+import { Sacraments } from '../../../../constants';
 
 // import {Observable} from "rxjs";
 
@@ -30,23 +34,38 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
   faithful$: Observable<Faithful[]>;
   certificate$: Observable<Certificate[]>;
   work$: Observable<Work[]>;
+  jurisdiction$: Observable<Jurisdiction[]>;
+  priest$: Observable<Priest[]>;
   END_subscription$: Subject<boolean>;
 
   account: Account;
   headers: Header[];
-  allFaithful: Faithful[]; // TODO remove
   currCertificate: Certificate;
   calendarEs: any;
+  allFaithful: Faithful[];
   certificates: Certificate[];
   works: Work[];
+  jurisdictions: Jurisdiction[];
+  priests: Priest[];
 
   faithful: Faithful;
   faithfulData: Faithful[];
-
+  work: Work;
+  workData: Work[];
+  jurisdiction: Jurisdiction;
+  jurisdictionData: Jurisdiction[];
+  certifyingPriest: Priest;
+  certifyingPriestData: Priest[];
+  celebrantPriest: Priest;
+  celebrantPriestData: Priest[];
   faithfulFather: Faithful;
   faithfulFatherData: Faithful[];
   faithfulMother: Faithful;
   faithfulMotherData: Faithful[];
+  faithfulGodFather: Faithful;
+  faithfulGodFatherData: Faithful[];
+  faithfulGodMother: Faithful;
+  faithfulGodMotherData: Faithful[];
 
   breadcrumbHome: MenuItem;
   breadcrumbItems: MenuItem[];
@@ -61,7 +80,9 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private faithfulService: FaithfulService,
     private certificateService: CertificateService,
-    private workService: WorkService
+    private workService: WorkService,
+    private jurisdictionService: JurisdictionService,
+    private priestService: PriestService
   ) {
     const me = this;
     const today = new Date();
@@ -71,6 +92,8 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
     me.faithful$ = me.faithfulService.faithful$.takeUntil(me.END_subscription$);
     me.certificate$ = me.certificateService.certificate$.takeUntil(me.END_subscription$);
     me.work$ = me.workService.work$.takeUntil(me.END_subscription$);
+    me.jurisdiction$ = me.jurisdictionService.jurisdiction$.takeUntil(me.END_subscription$);
+    me.priest$ = me.priestService.priest$.takeUntil(me.END_subscription$);
 
     me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
     me.breadcrumbItems = [
@@ -117,12 +140,25 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
         id: null,
         sacramento: '',
         fechaCreacion: ''
+      },
+      libroParroquia: {
+        id: null,
+        parroquiaId: null,
+        libro: '',
+        pagina: '',
+        numero: '',
+        fechaCreacion: ''
       }
     };
 
-    me.faithfulFatherData = []; // TODO change
-
-    me.faithfulMotherData = []; // TODO change
+    me.workData = [];
+    me.jurisdictionData = [];
+    me.celebrantPriestData = [];
+    me.certifyingPriestData = [];
+    me.faithfulFatherData = [];
+    me.faithfulMotherData = [];
+    me.faithfulGodFatherData = [];
+    me.faithfulGodMotherData = [];
 
     me.calendarEs = {
       firstDayOfWeek: 1,
@@ -189,8 +225,25 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
         }
       }
     );
+    me.jurisdiction$.subscribe(
+      data => {
+        if (data && data['status'] && data['status'] == 'success') {
+          me.jurisdictions = data['jurisdicciones'];
+        }
+      }
+    );
+    me.priest$.subscribe(
+      data => {
+        if (data && data['status'] && data['status'] == 'success') {
+          me.priests = data['sacerdotes'];
+        }
+      }
+    );
+    me.certificateService.getAllCertificates({'sacramentId': Sacraments.BAUTIZO});
     me.faithfulService.getAllFaithful();
     me.workService.getAllWorks({'id_tipo_obra': 1});
+    me.jurisdictionService.getAllJurisdictions({});
+    me.priestService.getAllSacerdotes({});
   }
 
   ngOnDestroy() {
@@ -201,52 +254,50 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
 
   validateData(record: Certificate) {
     const me = this;
-    /*
-    if (!ValidateUtil.nonEmpty(me.currFaithful.nombres)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de nombres es obligatorio.');
+    if (!ValidateUtil.hasProperty(me.faithful, 'id')) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Feligrés es obligatorio.');
       return false;
     }
 
-    if (!ValidateUtil.nonEmpty(me.currFaithful.apellidoPaterno)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de apellido paterno es obligatorio.');
+    if (!ValidateUtil.hasProperty(me.work, 'id')) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Parroquia es obligatorio.');
       return false;
     }
 
-    if (!ValidateUtil.nonEmpty(me.currFaithful.apellidoMaterno)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de apellido materno es obligatorio.');
+    if (!ValidateUtil.nonEmpty(me.currCertificate.fecha)) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Fecha de celebración es obligatorio.');
       return false;
     }
 
-    if (!ValidateUtil.nonEmpty(me.currFaithful.fechaNacimiento)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de fecha de nacimiento es obligatorio.');
+    if (!ValidateUtil.hasProperty(me.jurisdiction, 'id')) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Jurisdicción es obligatorio.');
       return false;
     }
 
-    if (!ValidateUtil.nonEmpty(me.currFaithful.procedencia)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de procedencia es obligatorio.');
+    if (!ValidateUtil.hasProperty(me.celebrantPriest, 'id')) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Sacerdote celebrante es obligatorio.');
       return false;
     }
 
-    if (!ValidateUtil.nonEmpty(me.currFaithful.genero)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de género es obligatorio.');
+    if (!ValidateUtil.hasProperty(me.certifyingPriest, 'id')) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Sacerdote certificador es obligatorio.');
       return false;
     }
 
-    if (!ValidateUtil.nonEmpty(me.currFaithful.birthCertificate.orc)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de ORC es obligatorio.');
+    if (!ValidateUtil.nonEmpty(me.currCertificate.libroParroquia.libro)) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Libro es obligatorio.');
       return false;
     }
 
-    if (!ValidateUtil.nonEmpty(me.currFaithful.birthCertificate.libro)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de libro es obligatorio.');
+    if (!ValidateUtil.nonEmpty(me.currCertificate.libroParroquia.pagina)) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Página es obligatorio.');
       return false;
     }
 
-    if (!ValidateUtil.nonEmpty(me.currFaithful.birthCertificate.partida)) {
-      me.showMessage('warn', 'Advertencia', 'El campo de partida es obligatorio.');
+    if (!ValidateUtil.nonEmpty(me.currCertificate.libroParroquia.numero)) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Número es obligatorio.');
       return false;
     }
-    */
     return true;
   }
 
@@ -270,27 +321,28 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
     return yyyy + '-' + mm + '-' + dd;
   }
 
-/*
-  setBirthdayDate(event) {
+  setCertificateDate(event) {
     const me = this;
-    me.currFaithful.fechaNacimiento = me.getFormatedDate(event);
+    me.currCertificate.fecha = me.getFormatedDate(event);
   }
-  addFaithful() {
+
+  addBaptism() {
     const me = this;
     if (me.validateData(me.currCertificate)) {
       me.loading = true;
 
       let params = {
-        'nombres': me.currFaithful.nombres,
-        'apellidoPaterno': me.currFaithful.apellidoPaterno,
-        'apellidoMaterno': me.currFaithful.apellidoMaterno,
-        'fechaNacimiento': me.currFaithful.fechaNacimiento,
-        'procedencia': me.currFaithful.procedencia,
-        'genero': me.currFaithful.genero,
-        'fechaCreacion': me.currFaithful.fechaCreacion,
-        'orc': me.currFaithful.birthCertificate.orc,
-        'libro': me.currFaithful.birthCertificate.libro,
-        'partida': me.currFaithful.birthCertificate.partida
+        'sacramentId': Sacraments.BAUTIZO,
+        'faithfulId': me.faithful.id,
+        'workId': me.work.id,
+        'fecha': me.currCertificate.fecha,
+        'jurisdictionId': me.jurisdiction.id,
+        'celebrantPriestId': me.celebrantPriest.id,
+        'certifyingPriestId': me.certifyingPriest.id,
+        'libro': me.currCertificate.libroParroquia.libro,
+        'pagina': me.currCertificate.libroParroquia.pagina,
+        'numero': me.currCertificate.libroParroquia.numero,
+        'observaciones': me.currCertificate.observaciones
       };
 
       if (!!me.faithfulFather && !!me.faithfulFather.id) {
@@ -299,23 +351,20 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
       if (!!me.faithfulMother && !!me.faithfulMother.id) {
         params['madreId'] = me.faithfulMother.id;
       }
+      if (!!me.faithfulGodFather && !!me.faithfulGodFather.id) {
+        params['padrinoId'] = me.faithfulGodFather.id;
+      }
+      if (!!me.faithfulGodMother && !!me.faithfulGodMother.id) {
+        params['madreId'] = me.faithfulGodMother.id;
+      }
 
-      me.faithfulService.addFaithful(params);
+      me.certificateService.addCertificate(params);
     }
   }
-*/
-  goToFaithfulList() {
-    const me = this;
-    me.router.navigate(['sacraments', 'faithful']);
-  }
 
-  filterFatherData(event) {
-    /*const me = this;
-    me.faithfulFatherData = me.certificates.filter(
-      data => {
-        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1 && parseInt(me.account.sub, 10) != data.id;
-      }
-    );*/
+  goToBaptismList() {
+    const me = this;
+    me.router.navigate(['sacraments', 'baptism']);
   }
 
   filterFaithfulData(event) {
@@ -327,13 +376,84 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  filterMotherData(event) {
-    /*const me = this;
-    me.faithfulMotherData = me.certificates.filter(
+  filterWorkData(event) {
+    const me = this;
+    me.workData = me.works.filter(
       data => {
-        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1 && parseInt(me.account.sub, 10) != data.id;
+        return data.nombre.toLowerCase().indexOf(event.query.toLowerCase()) != -1;
       }
-    );*/
+    );
+  }
+
+  filterJurisdictionData(event) {
+    const me = this;
+    me.jurisdictionData = me.jurisdictions.filter(
+      data => {
+        return data.jurisdiccion.toLowerCase().indexOf(event.query.toLowerCase()) != -1;
+      }
+    );
+  }
+
+  filterCelebrantPriestData(event) {
+    const me = this;
+    me.celebrantPriestData = me.priests.filter(
+      data => {
+        return data.nombre.toLowerCase().indexOf(event.query.toLowerCase()) != -1;
+      }
+    );
+  }
+
+  filterCertifyingPriestData(event) {
+    const me = this;
+    me.certifyingPriestData = me.priests.filter(
+      data => {
+        return data.nombre.toLowerCase().indexOf(event.query.toLowerCase()) != -1;
+      }
+    );
+  }
+
+  filterFatherData(event) {
+    const me = this;
+    me.faithfulFatherData = me.allFaithful.filter(
+      data => {
+        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1
+          && (!!me.faithful.id && me.faithful.id != data.id)
+          && data.genero == 'masculino';
+      }
+    );
+  }
+
+  filterMotherData(event) {
+    const me = this;
+    me.faithfulMotherData = me.allFaithful.filter(
+      data => {
+        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1
+          && (!!me.faithful.id && me.faithful.id != data.id)
+          && data.genero == 'femenino';
+      }
+    );
+  }
+
+  filterGodFatherData(event) {
+    const me = this;
+    me.faithfulGodFatherData = me.allFaithful.filter(
+      data => {
+        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1
+          && (!!me.faithful.id && me.faithful.id != data.id)
+          && data.genero == 'masculino';
+      }
+    );
+  }
+
+  filterGodMotherData(event) {
+    const me = this;
+    me.faithfulGodMotherData = me.allFaithful.filter(
+      data => {
+        return data.nombreCompleto.toLowerCase().indexOf(event.query.toLowerCase()) != -1
+          && (!!me.faithful.id && me.faithful.id != data.id)
+          && data.genero == 'femenino';
+      }
+    );
   }
 
   showMessage(severity, summary, detail) {

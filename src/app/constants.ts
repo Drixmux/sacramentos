@@ -24,3 +24,10 @@ export class Permissions {
   public static MATRIMONIO_BORRAR: string = 'MATRIMONIO_BORRAR';
   public static MATRIMONIO_PDF: string = 'MATRIMONIO_PDF';
 }
+
+export class Sacraments {
+  public static BAUTIZO = 1;
+  public static COMUNION = 2;
+  public static CONFIRMACION = 3;
+  public static MATRIMONIO = 4;
+}

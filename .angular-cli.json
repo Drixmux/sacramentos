@@ -27,7 +27,9 @@
         "../node_modules/font-awesome/css/font-awesome.min.css",
         "../node_modules/primeng/resources/themes/omega/theme.scss",
         "../node_modules/primeng/resources/primeng.min.css",
-        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css"
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+        "../node_modules/quill/dist/quill.core.css",
+        "../node_modules/quill/dist/quill.snow.css"
       ],
       "scripts": [
         "assets/materialize-admin/js/plugins/jquery-1.11.2.min.js",
@@ -35,7 +37,8 @@
         "assets/materialize-admin/js/materialize.js",
         "assets/materialize-admin/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js",
         "assets/materialize-admin/js/plugins.js",
-        "assets/materialize-admin/js/custom-script.js"
+        "assets/materialize-admin/js/custom-script.js",
+        "../node_modules/quill/dist/quill.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

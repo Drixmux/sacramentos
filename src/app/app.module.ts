@@ -10,6 +10,8 @@ import { user } from './reducers/user.reducer';
 import { certificate } from './reducers/certificate.reducer';
 import { faithful } from './reducers/faithful.reducer';
 import { work } from './reducers/work.reducer';
+import { jurisdiction } from './reducers/jurisdiction.reducer';
+import { priest } from './reducers/priest.reducer';
 
 import { AppRoutingModule } from './app.routing.module';
 
@@ -40,6 +42,8 @@ import { UserService } from './services/user.service';
 import { CertificateService } from './services/certificate.service';
 import { FaithfulService } from './services/faithful.service';
 import { WorkService } from './services/work.service';
+import { JurisdictionService } from './services/jurisdiction.service';
+import { PriestService } from './services/priest.service';
 
 import { AccountToolsService } from './utils/account.tools.service';
 import { ConfirmationService } from 'primeng/api';
@@ -60,6 +64,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { GrowlModule } from 'primeng/growl';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { EditorModule } from 'primeng/editor';
 
 
 const SERVICES = [
@@ -69,7 +74,9 @@ const SERVICES = [
   UserService,
   CertificateService,
   FaithfulService,
-  WorkService
+  WorkService,
+  JurisdictionService,
+  PriestService
 ];
 
 const UTILS = [
@@ -93,7 +100,8 @@ const PRIMENG_MODULES = [
   ProgressBarModule,
   BreadcrumbModule,
   GrowlModule,
-  ConfirmDialogModule
+  ConfirmDialogModule,
+  EditorModule
 ];
 @NgModule({
   declarations: [
@@ -124,7 +132,9 @@ const PRIMENG_MODULES = [
       user: user,
       certificate: certificate,
       faithful: faithful,
-      work: work
+      work: work,
+      jurisdiction: jurisdiction,
+      priest: priest
     }),
     PRIMENG_MODULES
   ],

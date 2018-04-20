@@ -8,6 +8,7 @@ import { UserService } from '../../../services/user.service';
 import { AccountService } from '../../../services/account.service';
 import { CertificateService } from '../../../services/certificate.service';
 import { LOAD_ALL_CERTIFICATES } from '../../../reducers/certificate.reducer';
+import { Sacraments } from '../../../constants';
 
 // import {Observable} from "rxjs";
 
@@ -93,7 +94,7 @@ export class CommunionComponent implements OnInit, OnDestroy {
       }
     );
     me.certificateService.getAllCertificates({
-      sacramentId: 2
+      sacramentId: Sacraments.COMUNION
     });
   }
 

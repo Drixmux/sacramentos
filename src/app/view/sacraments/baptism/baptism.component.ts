@@ -12,7 +12,7 @@ import { AccountToolsService } from '../../../utils/account.tools.service';
 
 import { LOAD_ALL_CERTIFICATES } from '../../../reducers/certificate.reducer';
 
-import { Permissions } from '../../../constants';
+import { Permissions, Sacraments } from '../../../constants';
 
 import { MenuItem } from 'primeng/api';
 
@@ -105,7 +105,7 @@ export class BaptismComponent implements OnInit, OnDestroy {
       data => {
         if (data && data['account']) {
           me.account = data['account'];
-          // me.canCreateBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_CREAR);
+          me.canCreateBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_CREAR);
           // me.canUpdateBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_EDITAR);
           // me.canDeleteBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_BORRAR);
           // me.canSeePdfBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_PDF);
@@ -127,7 +127,7 @@ export class BaptismComponent implements OnInit, OnDestroy {
       }
     );
     me.certificateService.getAllCertificates({
-      sacramentId: 1
+      sacramentId: Sacraments.BAUTIZO
     });
   }
 
