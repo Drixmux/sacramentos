@@ -106,7 +106,7 @@ export class BaptismComponent implements OnInit, OnDestroy {
         if (data && data['account']) {
           me.account = data['account'];
           me.canCreateBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_CREAR);
-          // me.canUpdateBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_EDITAR);
+          me.canUpdateBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_EDITAR);
           // me.canDeleteBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_BORRAR);
           // me.canSeePdfBaptism = me.accountToolsService.hasPermission(me.account, me.permissions.BAUTIZO_PDF);
         }

@@ -117,7 +117,7 @@ export class FaithfulComponent implements OnInit, OnDestroy {
           me.canCreateFaithful = me.accountToolsService.hasPermission(me.account, me.permissions.FIEL_CREAR);
           me.canUpdateFaithful = me.accountToolsService.hasPermission(me.account, me.permissions.FIEL_EDITAR);
           me.canDeleteFaithful = me.accountToolsService.hasPermission(me.account, me.permissions.FIEL_BORRAR);
-          me.canSeePdfFaithful = me.accountToolsService.hasPermission(me.account, me.permissions.FIEL_PDF);
+          // me.canSeePdfFaithful = me.accountToolsService.hasPermission(me.account, me.permissions.FIEL_PDF);
         }
       }, error => {
         me.accountService.logOut({});

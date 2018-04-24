@@ -4,13 +4,19 @@ import { MainComponent } from './view/main/main.component';
 import { SacramentsComponent } from './view/sacraments/sacraments.component';
 import { LoginComponent } from './view/login/login.component';
 import { HomeComponent } from './view/sacraments/home/home.component';
+
 import { FaithfulComponent } from './view/sacraments/faithfull/faithful.component';
 import { FaithfulCreateComponent } from './view/sacraments/faithfull/faithfulCreate/faithfulCreate.component';
 import { FaithfulUpdateComponent } from './view/sacraments/faithfull/faithfulUpdate/faithfulUpdate.component';
+
 import { BaptismComponent } from './view/sacraments/baptism/baptism.component';
 import { BaptismCreateComponent } from './view/sacraments/baptism/baptismCreate/baptismCreate.component';
+import { BaptismUpdateComponent } from './view/sacraments/baptism/baptismUpdate/baptismUpdate.component';
+
 import { CommunionComponent } from './view/sacraments/communion/communion.component';
+
 import { ConfirmationComponent } from './view/sacraments/confirmation/confirmation.component';
+
 import { MarriageComponent } from './view/sacraments/marriage/marriage.component';
 
 import { AppResolver } from './app.resolver';
@@ -64,6 +70,12 @@ const APP_ROUTES: Routes = [
           }, {
             path: 'baptism/create',
             component: BaptismCreateComponent,
+            resolve: {
+              userSession: MainResolver
+            }
+          }, {
+            path: 'baptism/update/:certificateId',
+            component: BaptismUpdateComponent,
             resolve: {
               userSession: MainResolver
             }
