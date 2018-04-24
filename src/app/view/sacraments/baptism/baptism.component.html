@@ -1,3 +1,5 @@
+<p-growl [(value)]="messages"></p-growl>
+<p-confirmDialog></p-confirmDialog>
 <div class="container">
   <br/>
   <nav class="amber darken-4">
@@ -60,7 +62,7 @@
             <td> {{ certificate.user.genero }} </td>
             <td *ngIf="canUpdateBaptism || canDeleteBaptism || canSeePdfBaptism">
               <p-button icon="fa fa-fw fa-edit" styleClass="ui-button-warning" [routerLink]="['/sacraments', 'baptism', 'update', certificate.id]" *ngIf="canUpdateBaptism"></p-button>
-              <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger" *ngIf="canDeleteBaptism"></p-button>
+              <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger" (onClick)="confirmDeleteModal(certificate)" *ngIf="canDeleteBaptism"></p-button>
               <p-button icon="fa fa-fw fa-print" *ngIf="canSeePdfBaptism"></p-button>
             </td>
           </tr>
