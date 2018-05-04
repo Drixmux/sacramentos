@@ -26,11 +26,14 @@ import { FaithfulCreateComponent } from './view/sacraments/faithfull/faithfulCre
 import { FaithfulUpdateComponent } from './view/sacraments/faithfull/faithfulUpdate/faithfulUpdate.component';
 
 import { HomeComponent } from './view/sacraments/home/home.component';
+
 import { BaptismComponent } from './view/sacraments/baptism/baptism.component';
 import { BaptismCreateComponent } from './view/sacraments/baptism/baptismCreate/baptismCreate.component';
 import { BaptismUpdateComponent } from './view/sacraments/baptism/baptismUpdate/baptismUpdate.component';
 
 import { CommunionComponent } from './view/sacraments/communion/communion.component';
+import { CommunionCreateComponent } from './view/sacraments/communion/communionCreate/communionCreate.component';
+
 import { ConfirmationComponent } from './view/sacraments/confirmation/confirmation.component';
 import { MarriageComponent } from './view/sacraments/marriage/marriage.component';
 
@@ -119,6 +122,7 @@ const PRIMENG_MODULES = [
     BaptismCreateComponent,
     BaptismUpdateComponent,
     CommunionComponent,
+    CommunionCreateComponent,
     ConfirmationComponent,
     MarriageComponent,
     LoginComponent

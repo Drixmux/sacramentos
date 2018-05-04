@@ -19,7 +19,6 @@ import { LOAD_ALL_CERTIFICATES, CREATE_CERTIFICATE, UPDATE_CERTIFICATE, DELETE_C
 import { Permissions, Sacraments } from '../../../constants';
 
 import { MenuItem } from 'primeng/api';
-import {DELETE_FAITHFUL} from '../../../reducers/faithful.reducer';
 
 
 // import {Observable} from "rxjs";

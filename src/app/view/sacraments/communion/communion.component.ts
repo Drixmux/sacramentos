@@ -7,8 +7,14 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../services/user.service';
 import { AccountService } from '../../../services/account.service';
 import { CertificateService } from '../../../services/certificate.service';
+
+import { AccountToolsService } from '../../../utils/account.tools.service';
+
 import { LOAD_ALL_CERTIFICATES } from '../../../reducers/certificate.reducer';
-import { Sacraments } from '../../../constants';
+
+import { Permissions, Sacraments } from '../../../constants';
+
+import { MenuItem } from 'primeng/api';
 
 // import {Observable} from "rxjs";
 
@@ -24,10 +30,21 @@ export class CommunionComponent implements OnInit, OnDestroy {
   certificates: Certificate[];
   headers: Header[];
 
+  breadcrumbHome: MenuItem;
+  breadcrumbItems: MenuItem[];
+
   loading: boolean;
   quantity: number;
 
+  canCreateCommunion: Boolean;
+  canUpdateCommunion: Boolean;
+  canDeleteCommunion: Boolean;
+  canSeePdfCommunion: Boolean;
+
+  permissions;
+
   constructor(
+    private accountToolsService: AccountToolsService,
     private userService: UserService,
     private accountService: AccountService,
     private certificateService: CertificateService
@@ -39,6 +56,18 @@ export class CommunionComponent implements OnInit, OnDestroy {
 
     me.loading = true;
     me.quantity = 5;
+
+    me.permissions = Permissions;
+
+    me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
+    me.breadcrumbItems = [
+      {label:'Primera comunión'}
+    ];
+
+    me.canCreateCommunion = false;
+    me.canUpdateCommunion = false;
+    me.canDeleteCommunion = false;
+    me.canSeePdfCommunion = false;
 
     me.account = {
       sub: '',
@@ -76,6 +105,10 @@ export class CommunionComponent implements OnInit, OnDestroy {
       data => {
         if (data && data['account']) {
           me.account = data['account'];
+          me.canCreateCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_CREAR);
+          //me.canUpdateCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_EDITAR);
+          //me.canDeleteCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_BORRAR);
+          //me.canSeePdfCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_PDF);
         }
       }, error => {
         me.accountService.logOut({});
