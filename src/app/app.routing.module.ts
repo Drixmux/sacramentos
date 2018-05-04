@@ -15,6 +15,7 @@ import { BaptismUpdateComponent } from './view/sacraments/baptism/baptismUpdate/
 
 import { CommunionComponent } from './view/sacraments/communion/communion.component';
 import { CommunionCreateComponent } from './view/sacraments/communion/communionCreate/communionCreate.component';
+import { CommunionUpdateComponent } from './view/sacraments/communion/communionUpdate/communionUpdate.component';
 
 import { ConfirmationComponent } from './view/sacraments/confirmation/confirmation.component';
 
@@ -89,6 +90,12 @@ const APP_ROUTES: Routes = [
           }, {
             path: 'communion/create',
             component: CommunionCreateComponent,
+            resolve: {
+              userSession: MainResolver
+            }
+          }, {
+            path: 'communion/update/:certificateId',
+            component: CommunionUpdateComponent,
             resolve: {
               userSession: MainResolver
             }

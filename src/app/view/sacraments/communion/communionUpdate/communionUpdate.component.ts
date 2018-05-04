@@ -20,16 +20,16 @@ import { LOAD_ALL_FAITHFUL } from '../../../../reducers/faithful.reducer';
 import { ValidateUtil } from '../../../../utils/validate.service';
 
 import { MenuItem, SelectItem } from 'primeng/api';
-import { LOAD_ALL_CERTIFICATES, LOAD_CERTIFICATE, UPDATE_CERTIFICATE } from '../../../../reducers/certificate.reducer';
+import {CREATE_CERTIFICATE, LOAD_ALL_CERTIFICATES, LOAD_CERTIFICATE, UPDATE_CERTIFICATE} from '../../../../reducers/certificate.reducer';
 
 import { Sacraments } from '../../../../constants';
 
 // import {Observable} from "rxjs";
 
 @Component({
-  templateUrl: './baptismUpdate.component.html'
+  templateUrl: './communionUpdate.component.html'
 })
-export class BaptismUpdateComponent implements OnInit, OnDestroy {
+export class CommunionUpdateComponent implements OnInit, OnDestroy {
   user$: Observable<User>;
   faithful$: Observable<Faithful[]>;
   certificate$: Observable<Certificate[]>;
@@ -99,8 +99,8 @@ export class BaptismUpdateComponent implements OnInit, OnDestroy {
 
     me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
     me.breadcrumbItems = [
-      {label:'Bautizos', routerLink: ['/sacraments', 'baptism']},
-      {label:'Edición'}
+      {label:'Primera comunión', routerLink: ['/sacraments', 'communion']},
+      {label:'Registro'}
     ];
 
     me.loading = false;
@@ -214,20 +214,29 @@ export class BaptismUpdateComponent implements OnInit, OnDestroy {
               me.faithfulService.getAllFaithful();
               me.workService.getAllWorks({'id_tipo_obra': 1});
               me.jurisdictionService.getAllJurisdictions({});
-              me.priestService.getAllSacerdotes({});
+              // me.priestService.getAllSacerdotes({});
+            }
+            break;
+          case CREATE_CERTIFICATE:
+            if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
+              me.loading = false;
+              me.certificates = data['payload']['certificates'];
+              me.router.navigate(['sacraments', 'communion']);
+            } else if(data['payload'] && data['payload']['status'] && data['payload']['status'] == 'error' && data['payload']['msg']) {
+              me.showMessage('error', 'Error', data['payload']['msg']);
+              me.loading = false;
             }
             break;
           case UPDATE_CERTIFICATE:
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
               me.loading = false;
               me.certificates = data['payload']['certificates'];
-              me.router.navigate(['sacraments', 'baptism']);
+              me.router.navigate(['sacraments', 'communion']);
             } else if(data['payload'] && data['payload']['status'] && data['payload']['status'] == 'error' && data['payload']['msg']) {
               me.showMessage('error', 'Error', data['payload']['msg']);
               me.loading = false;
             }
             break;
-
         }
       }
     );
@@ -257,20 +266,12 @@ export class BaptismUpdateComponent implements OnInit, OnDestroy {
       data => {
         if (data && data['status'] && data['status'] == 'success') {
           me.priests = data['sacerdotes'];
-          const currCelebrantPriest = me.priests.filter(item => {return item.id == me.currCertificate.sacerdoteCelebranteId});
-          const currCertifyingPriest = me.priests.filter(item => {return item.id == me.currCertificate.sacerdoteCertificadorId});
-          if (currCelebrantPriest.length > 0) {
-            me.celebrantPriest = currCelebrantPriest[0];
-          }
-          if (currCertifyingPriest.length > 0) {
-            me.certifyingPriest = currCertifyingPriest[0];
-          }
         }
       }
     );
-    me.certificateService.getAllCertificates({'sacramentId': Sacraments.BAUTIZO});
+    me.certificateService.getAllCertificates({'sacramentId': Sacraments.COMUNION});
 
-    me.certificateService.getCertificate(parseInt(me.route.snapshot.paramMap.get('certificateId'), 10), {'sacramentId': Sacraments.BAUTIZO});
+    me.certificateService.getCertificate(parseInt(me.route.snapshot.paramMap.get('certificateId'), 10), {'sacramentId': Sacraments.COMUNION});
   }
 
   ngOnDestroy() {
@@ -281,7 +282,6 @@ export class BaptismUpdateComponent implements OnInit, OnDestroy {
 
   validateData() {
     const me = this;
-
     if (!ValidateUtil.hasProperty(me.work, 'id')) {
       me.showMessage('warn', 'Advertencia', 'El campo de Parroquia es obligatorio.');
       return false;
@@ -294,16 +294,6 @@ export class BaptismUpdateComponent implements OnInit, OnDestroy {
 
     if (!ValidateUtil.hasProperty(me.jurisdiction, 'id')) {
       me.showMessage('warn', 'Advertencia', 'El campo de Jurisdicción es obligatorio.');
-      return false;
-    }
-
-    if (!ValidateUtil.hasProperty(me.celebrantPriest, 'id')) {
-      me.showMessage('warn', 'Advertencia', 'El campo de Sacerdote celebrante es obligatorio.');
-      return false;
-    }
-
-    if (!ValidateUtil.hasProperty(me.certifyingPriest, 'id')) {
-      me.showMessage('warn', 'Advertencia', 'El campo de Sacerdote certificador es obligatorio.');
       return false;
     }
 
@@ -349,19 +339,17 @@ export class BaptismUpdateComponent implements OnInit, OnDestroy {
     me.currCertificate.fecha = me.getFormatedDate(event);
   }
 
-  editBaptism() {
+  editCommunion() {
     const me = this;
     if (me.validateData()) {
       me.loading = true;
 
       let params = {
-        'sacramentId': Sacraments.BAUTIZO,
+        'sacramentId': Sacraments.COMUNION,
         'faithfulId': me.currCertificate.user.id,
         'workId': me.work.id,
         'fecha': me.currCertificate.fecha,
         'jurisdictionId': me.jurisdiction.id,
-        'celebrantPriestId': me.celebrantPriest.id,
-        'certifyingPriestId': me.certifyingPriest.id,
         'bookChurchId': me.currCertificate.libroParroquia.id,
         'libro': me.currCertificate.libroParroquia.libro,
         'pagina': me.currCertificate.libroParroquia.pagina,
@@ -369,26 +357,13 @@ export class BaptismUpdateComponent implements OnInit, OnDestroy {
         'observaciones': me.currCertificate.observaciones
       };
 
-      if (!!me.faithfulFather && !!me.faithfulFather.id) {
-        params['padreId'] = me.faithfulFather.id;
-      }
-      if (!!me.faithfulMother && !!me.faithfulMother.id) {
-        params['madreId'] = me.faithfulMother.id;
-      }
-      if (!!me.faithfulGodFather && !!me.faithfulGodFather.id) {
-        params['padrinoId'] = me.faithfulGodFather.id;
-      }
-      if (!!me.faithfulGodMother && !!me.faithfulGodMother.id) {
-        params['madreId'] = me.faithfulGodMother.id;
-      }
-
       me.certificateService.updateCertificate(me.currCertificate.id, params);
     }
   }
 
-  goToBaptismList() {
+  goToCommunionList() {
     const me = this;
-    me.router.navigate(['sacraments', 'baptism']);
+    me.router.navigate(['sacraments', 'communion']);
   }
 
   filterFaithfulData(event) {

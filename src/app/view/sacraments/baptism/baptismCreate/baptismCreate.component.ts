@@ -243,7 +243,7 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
     me.faithfulService.getAllFaithful();
     me.workService.getAllWorks({'id_tipo_obra': 1});
     me.jurisdictionService.getAllJurisdictions({});
-    me.priestService.getAllSacerdotes({});
+    // me.priestService.getAllSacerdotes({});
   }
 
   ngOnDestroy() {
@@ -252,7 +252,7 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
     me.END_subscription$.unsubscribe();
   }
 
-  validateData(record: Certificate) {
+  validateData() {
     const me = this;
     if (!ValidateUtil.hasProperty(me.faithful, 'id')) {
       me.showMessage('warn', 'Advertencia', 'El campo de Feligrés es obligatorio.');
@@ -328,7 +328,7 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
 
   addBaptism() {
     const me = this;
-    if (me.validateData(me.currCertificate)) {
+    if (me.validateData()) {
       me.loading = true;
 
       let params = {

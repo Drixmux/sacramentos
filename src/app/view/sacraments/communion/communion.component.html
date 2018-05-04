@@ -48,7 +48,7 @@
               {{ header.header }}
               <p-sortIcon [field]="header.field"></p-sortIcon>
             </th>
-            <th *ngIf="false"> Optiones </th>
+            <th *ngIf="canUpdateCommunion || canDeleteCommunion || canSeePdfCommunion"> Opciones </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-certificate>
@@ -58,10 +58,10 @@
             <td> {{ certificate.user.apellidoMaterno }} </td>
             <td> {{ certificate.fecha }} </td>
             <td> {{ certificate.user.genero }} </td>
-            <td *ngIf="false">
-              <p-button icon="fa fa-fw fa-edit" styleClass="ui-button-warning"></p-button>
-              <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger"></p-button>
-              <p-button icon="fa fa-fw fa-print"></p-button>
+            <td *ngIf="canUpdateCommunion || canDeleteCommunion || canSeePdfCommunion">
+              <p-button icon="fa fa-fw fa-edit" styleClass="ui-button-warning" [routerLink]="['/sacraments', 'communion', 'update', certificate.id]" *ngIf="canUpdateCommunion"></p-button>
+              <p-button icon="fa fa-fw fa-trash" styleClass="ui-button-danger" *ngIf="canDeleteCommunion"></p-button>
+              <p-button icon="fa fa-fw fa-print" *ngIf="canSeePdfCommunion"></p-button>
             </td>
           </tr>
         </ng-template>

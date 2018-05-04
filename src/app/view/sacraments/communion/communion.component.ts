@@ -106,7 +106,7 @@ export class CommunionComponent implements OnInit, OnDestroy {
         if (data && data['account']) {
           me.account = data['account'];
           me.canCreateCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_CREAR);
-          //me.canUpdateCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_EDITAR);
+          me.canUpdateCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_EDITAR);
           //me.canDeleteCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_BORRAR);
           //me.canSeePdfCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_PDF);
         }
