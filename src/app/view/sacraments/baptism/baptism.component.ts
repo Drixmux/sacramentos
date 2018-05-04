@@ -139,7 +139,7 @@ export class BaptismComponent implements OnInit, OnDestroy {
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
               me.certificates = data['payload']['certificates'];
               me.loading = false;
-              me.showMessage('info', 'Eliminado', 'Se eliminó al fiel correctamente.');
+              me.showMessage('info', 'Eliminado', 'Se eliminó el certificado del fiel correctamente.');
             }
             break;
         }

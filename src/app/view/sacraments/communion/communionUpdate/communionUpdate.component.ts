@@ -100,7 +100,7 @@ export class CommunionUpdateComponent implements OnInit, OnDestroy {
     me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
     me.breadcrumbItems = [
       {label:'Primera comunión', routerLink: ['/sacraments', 'communion']},
-      {label:'Registro'}
+      {label:'Edición'}
     ];
 
     me.loading = false;

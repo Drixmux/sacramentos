@@ -10,7 +10,11 @@ import { CertificateService } from '../../../services/certificate.service';
 
 import { AccountToolsService } from '../../../utils/account.tools.service';
 
-import { LOAD_ALL_CERTIFICATES } from '../../../reducers/certificate.reducer';
+import { Message } from 'primeng/components/common/api';
+
+import { ConfirmationService } from 'primeng/api';
+
+import {CREATE_CERTIFICATE, DELETE_CERTIFICATE, LOAD_ALL_CERTIFICATES, UPDATE_CERTIFICATE} from '../../../reducers/certificate.reducer';
 
 import { Permissions, Sacraments } from '../../../constants';
 
@@ -43,11 +47,14 @@ export class CommunionComponent implements OnInit, OnDestroy {
 
   permissions;
 
+  messages: Message[];
+
   constructor(
     private accountToolsService: AccountToolsService,
     private userService: UserService,
     private accountService: AccountService,
-    private certificateService: CertificateService
+    private certificateService: CertificateService,
+    private confirmationService: ConfirmationService
   ) {
     const me = this;
     me.END_subscription$ = new Subject<boolean>();
@@ -97,6 +104,8 @@ export class CommunionComponent implements OnInit, OnDestroy {
       header: 'Género',
       field: 'user.genero'
     }];
+
+    me.messages = [];
   }
 
   ngOnInit() {
@@ -107,7 +116,7 @@ export class CommunionComponent implements OnInit, OnDestroy {
           me.account = data['account'];
           me.canCreateCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_CREAR);
           me.canUpdateCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_EDITAR);
-          //me.canDeleteCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_BORRAR);
+          me.canDeleteCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_BORRAR);
           //me.canSeePdfCommunion = me.accountToolsService.hasPermission(me.account, me.permissions.COMUNION_PDF);
         }
       }, error => {
@@ -118,9 +127,18 @@ export class CommunionComponent implements OnInit, OnDestroy {
       data => {
         switch (data['type']) {
           case LOAD_ALL_CERTIFICATES:
+          case CREATE_CERTIFICATE:
+          case UPDATE_CERTIFICATE:
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
               me.certificates = data['payload']['certificates'];
               me.loading = false;
+            }
+            break;
+          case DELETE_CERTIFICATE:
+            if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
+              me.certificates = data['payload']['certificates'];
+              me.loading = false;
+              me.showMessage('info', 'Eliminado', 'Se eliminó el certificado del fiel correctamente.');
             }
             break;
         }
@@ -137,4 +155,22 @@ export class CommunionComponent implements OnInit, OnDestroy {
     me.END_subscription$.unsubscribe();
   }
 
+  confirmDeleteModal(certificate) {
+    const me = this;
+    me.confirmationService.confirm({
+      message: '¿Esta seguro que quiere eliminar el certificado de primera comunión del fiel?',
+      header: 'Confirmación de eliminado',
+      icon: 'fa fa-trash',
+      accept: () => {
+        me.loading = true;
+        me.certificateService.deleteCertificate(certificate.id, {});
+      }
+    });
+  }
+
+  showMessage(severity, summary, detail) {
+    const me = this;
+    me.messages = [];
+    me.messages.push({severity: severity, summary: summary, detail: detail});
+  }
 }
