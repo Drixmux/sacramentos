@@ -18,6 +18,8 @@ import { CommunionCreateComponent } from './view/sacraments/communion/communionC
 import { CommunionUpdateComponent } from './view/sacraments/communion/communionUpdate/communionUpdate.component';
 
 import { ConfirmationComponent } from './view/sacraments/confirmation/confirmation.component';
+import { ConfirmationCreateComponent } from './view/sacraments/confirmation/confirmationCreate/confirmationCreate.component';
+import { ConfirmationUpdateComponent } from './view/sacraments/confirmation/confirmationUpdate/confirmationUpdate.component';
 
 import { MarriageComponent } from './view/sacraments/marriage/marriage.component';
 
@@ -102,6 +104,18 @@ const APP_ROUTES: Routes = [
           }, {
             path: 'confirmation',
             component: ConfirmationComponent,
+            resolve: {
+              userSession: MainResolver
+            }
+          }, {
+            path: 'confirmation/create',
+            component: ConfirmationCreateComponent,
+            resolve: {
+              userSession: MainResolver
+            }
+          }, {
+            path: 'confirmation/update/:certificateId',
+            component: ConfirmationUpdateComponent,
             resolve: {
               userSession: MainResolver
             }

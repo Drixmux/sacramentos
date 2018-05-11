@@ -36,6 +36,9 @@ import { CommunionCreateComponent } from './view/sacraments/communion/communionC
 import { CommunionUpdateComponent } from './view/sacraments/communion/communionUpdate/communionUpdate.component';
 
 import { ConfirmationComponent } from './view/sacraments/confirmation/confirmation.component';
+import { ConfirmationCreateComponent } from './view/sacraments/confirmation/confirmationCreate/confirmationCreate.component';
+import { ConfirmationUpdateComponent } from './view/sacraments/confirmation/confirmationUpdate/confirmationUpdate.component';
+
 import { MarriageComponent } from './view/sacraments/marriage/marriage.component';
 
 import { LoginComponent } from './view/login/login.component';
@@ -126,6 +129,8 @@ const PRIMENG_MODULES = [
     CommunionCreateComponent,
     CommunionUpdateComponent,
     ConfirmationComponent,
+    ConfirmationCreateComponent,
+    ConfirmationUpdateComponent,
     MarriageComponent,
     LoginComponent
   ],

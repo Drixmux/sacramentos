@@ -27,9 +27,9 @@ import { Sacraments } from '../../../../constants';
 // import {Observable} from "rxjs";
 
 @Component({
-  templateUrl: './baptismCreate.component.html'
+  templateUrl: './confirmationCreate.component.html'
 })
-export class BaptismCreateComponent implements OnInit, OnDestroy {
+export class ConfirmationCreateComponent implements OnInit, OnDestroy {
   user$: Observable<User>;
   faithful$: Observable<Faithful[]>;
   certificate$: Observable<Certificate[]>;
@@ -97,7 +97,7 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
 
     me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
     me.breadcrumbItems = [
-      {label:'Bautizos', routerLink: ['/sacraments', 'baptism']},
+      {label:'Confirmación', routerLink: ['/sacraments', 'confirmation']},
       {label:'Registro'}
     ];
 
@@ -209,7 +209,7 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
               me.loading = false;
               me.certificates = data['payload']['certificates'];
-              me.router.navigate(['sacraments', 'baptism']);
+              me.router.navigate(['sacraments', 'confirmation']);
             } else if(data['payload'] && data['payload']['status'] && data['payload']['status'] == 'error' && data['payload']['msg']) {
               me.showMessage('error', 'Error', data['payload']['msg']);
               me.loading = false;
@@ -239,7 +239,7 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
         }
       }
     );
-    me.certificateService.getAllCertificates({'sacramentId': Sacraments.BAUTIZO});
+    me.certificateService.getAllCertificates({'sacramentId': Sacraments.CONFIRMACION});
     me.faithfulService.getAllFaithful();
     me.workService.getAllWorks({'id_tipo_obra': 1});
     me.jurisdictionService.getAllJurisdictions({});
@@ -326,13 +326,13 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
     me.currCertificate.fecha = me.getFormatedDate(event);
   }
 
-  addBaptism() {
+  addConfirmation() {
     const me = this;
     if (me.validateData()) {
       me.loading = true;
 
       let params = {
-        'sacramentId': Sacraments.BAUTIZO,
+        'sacramentId': Sacraments.CONFIRMACION,
         'faithfulId': me.faithful.id,
         'workId': me.work.id,
         'fecha': me.currCertificate.fecha,
@@ -362,9 +362,9 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToBaptismList() {
+  goToConfirmationList() {
     const me = this;
-    me.router.navigate(['sacraments', 'baptism']);
+    me.router.navigate(['sacraments', 'confirmation']);
   }
 
   filterFaithfulData(event) {

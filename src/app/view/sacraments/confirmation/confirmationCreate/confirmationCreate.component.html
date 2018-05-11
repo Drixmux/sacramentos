@@ -4,7 +4,7 @@
   <nav class="amber darken-4">
     <div class="nav-wrapper">
       <div class="col s12">
-        <h1 class="brand-logo center">Edición de primera comunión</h1>
+        <h1 class="brand-logo center">Registro de confirmación</h1>
       </div>
     </div>
   </nav>
@@ -19,25 +19,21 @@
       <p-card title="Datos generales">
         <hr/><br/>
         <div class="row">
-          <div class="ui-float-label col s12 m12">
-            <strong> Feligres: </strong>
-            {{ currCertificate.user.nombres }} {{ currCertificate.user.apellidoPaterno }} {{ currCertificate.user.apellidoMaterno }}
+          <div class="ui-float-label col s12 m6">
+            <p-autoComplete [(ngModel)]="faithful" [suggestions]="faithfulData" field="nombreCompleto" (completeMethod)="filterFaithfulData($event)" placeholder="Feligrés (*)"></p-autoComplete>
+          </div>
+          <div class="col s12 m6">
+            <p-calendar [locale]="calendarEs" (onSelect)="setCertificateDate($event)" [readonlyInput]="true" placeholder="Fecha de celebración (*)"></p-calendar>
           </div>
         </div>
         <div class="row">
-          <div class="col s12 m6">
-            <p-calendar [(ngModel)]="currCertificateBirthday" [locale]="calendarEs" (onSelect)="setCertificateDate($event)" [readonlyInput]="true" placeholder="Fecha de celebración (*)"></p-calendar>
-          </div>
           <div class="ui-float-label col s12 m6">
             <p-autoComplete [(ngModel)]="work" [suggestions]="workData" field="nombre" (completeMethod)="filterWorkData($event)" placeholder="Parroquia (*)"></p-autoComplete>
           </div>
-        </div>
-        <div class="row">
-          <div class="ui-float-label col s12 m12">
+          <div class="ui-float-label col s12 m6">
             <p-autoComplete [(ngModel)]="jurisdiction" [suggestions]="jurisdictionData" field="jurisdiccion" (completeMethod)="filterJurisdictionData($event)" placeholder="Jurisdicción Eclesiástica (*)"></p-autoComplete>
           </div>
         </div>
-        <!--
         <div class="row">
           <div class="ui-float-label col s12 m6">
             <p-autoComplete [(ngModel)]="celebrantPriest" [suggestions]="celebrantPriestData" field="nombre" (completeMethod)="filterCelebrantPriestData($event)" placeholder="Sacerdote celebrante (*)"></p-autoComplete>
@@ -46,7 +42,6 @@
             <p-autoComplete [(ngModel)]="certifyingPriest" [suggestions]="certifyingPriestData" field="nombre" (completeMethod)="filterCertifyingPriestData($event)" placeholder="Sacerdote certificador (*)"></p-autoComplete>
           </div>
         </div>
-        -->
         <div class="row">
           <div class="ui-float-label col s12 m12">
             <p-editor placeholder="Observaciones" [(ngModel)]="currCertificate.observaciones" [style]="{'height':'320px'}"></p-editor>
@@ -70,7 +65,6 @@
           </div>
         </div>
       </p-card>
-      <!--
       <p-card title="Datos de los padres">
         <hr/><br/>
         <div class="row">
@@ -93,12 +87,11 @@
           </div>
         </div>
       </p-card>
-      -->
       <p-card>
         <div class="row">
           <div class="input-field col s12 center-align">
-            <p-button label="Editar" styleClass="ui-button-success big-button" icon="fa fa-fw fa-check" (onClick)="editCommunion()" [disabled]="loading"></p-button>
-            <p-button label="Cancelar" styleClass="ui-button-warning big-button" (onClick)="goToCommunionList()" [disabled]="loading"></p-button>
+            <p-button label="Registrar" styleClass="ui-button-success big-button" icon="fa fa-fw fa-check" (onClick)="addConfirmation()" [disabled]="loading"></p-button>
+            <p-button label="Cancelar" styleClass="ui-button-warning big-button" (onClick)="goToConfirmationList()" [disabled]="loading"></p-button>
             <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
           </div>
         </div>
