@@ -40,6 +40,7 @@ import { ConfirmationCreateComponent } from './view/sacraments/confirmation/conf
 import { ConfirmationUpdateComponent } from './view/sacraments/confirmation/confirmationUpdate/confirmationUpdate.component';
 
 import { MarriageComponent } from './view/sacraments/marriage/marriage.component';
+import { MarriageCreateComponent } from './view/sacraments/marriage/marriageCreate/marriageCreate.component';
 
 import { LoginComponent } from './view/login/login.component';
 
@@ -132,6 +133,7 @@ const PRIMENG_MODULES = [
     ConfirmationCreateComponent,
     ConfirmationUpdateComponent,
     MarriageComponent,
+    MarriageCreateComponent,
     LoginComponent
   ],
   imports: [

@@ -344,13 +344,14 @@ export class BaptismCreateComponent implements OnInit, OnDestroy {
         'numero': me.currCertificate.libroParroquia.numero,
         'observaciones': me.currCertificate.observaciones
       };
-
+      /*
       if (!!me.faithfulFather && !!me.faithfulFather.id) {
         params['padreId'] = me.faithfulFather.id;
       }
       if (!!me.faithfulMother && !!me.faithfulMother.id) {
         params['madreId'] = me.faithfulMother.id;
       }
+      */
       if (!!me.faithfulGodFather && !!me.faithfulGodFather.id) {
         params['padrinoId'] = me.faithfulGodFather.id;
       }

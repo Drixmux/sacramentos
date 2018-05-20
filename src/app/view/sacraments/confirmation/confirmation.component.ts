@@ -16,7 +16,7 @@ import { Message } from 'primeng/components/common/api';
 
 import { ConfirmationService } from 'primeng/api';
 
-import {CREATE_CERTIFICATE, DELETE_CERTIFICATE, LOAD_ALL_CERTIFICATES, UPDATE_CERTIFICATE} from '../../../reducers/certificate.reducer';
+import { CREATE_CERTIFICATE, DELETE_CERTIFICATE, LOAD_ALL_CERTIFICATES, UPDATE_CERTIFICATE } from '../../../reducers/certificate.reducer';
 
 import { Sacraments, Permissions } from '../../../constants';
 

@@ -22,6 +22,7 @@ import { ConfirmationCreateComponent } from './view/sacraments/confirmation/conf
 import { ConfirmationUpdateComponent } from './view/sacraments/confirmation/confirmationUpdate/confirmationUpdate.component';
 
 import { MarriageComponent } from './view/sacraments/marriage/marriage.component';
+import { MarriageCreateComponent } from './view/sacraments/marriage/marriageCreate/marriageCreate.component';
 
 import { AppResolver } from './app.resolver';
 import { MainResolver } from './resolvers/main.resolver';
@@ -122,6 +123,12 @@ const APP_ROUTES: Routes = [
           }, {
             path: 'marriage',
             component: MarriageComponent,
+            resolve: {
+              userSession: MainResolver
+            }
+          }, {
+            path: 'marriage/create',
+            component: MarriageCreateComponent,
             resolve: {
               userSession: MainResolver
             }

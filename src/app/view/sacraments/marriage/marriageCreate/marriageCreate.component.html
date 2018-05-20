@@ -4,7 +4,7 @@
   <nav class="amber darken-4">
     <div class="nav-wrapper">
       <div class="col s12">
-        <h1 class="brand-logo center">Registro de confirmación</h1>
+        <h1 class="brand-logo center">Registro de matrimonio</h1>
       </div>
     </div>
   </nav>
@@ -65,7 +65,6 @@
           </div>
         </div>
       </p-card>
-      <!--
       <p-card title="Datos de los padres">
         <hr/><br/>
         <div class="row">
@@ -77,7 +76,6 @@
           </div>
         </div>
       </p-card>
-      -->
       <p-card title="Datos de los padrinos">
         <hr/><br/>
         <div class="row">
@@ -92,8 +90,8 @@
       <p-card>
         <div class="row">
           <div class="input-field col s12 center-align">
-            <p-button label="Registrar" styleClass="ui-button-success big-button" icon="fa fa-fw fa-check" (onClick)="addConfirmation()" [disabled]="loading"></p-button>
-            <p-button label="Cancelar" styleClass="ui-button-warning big-button" (onClick)="goToConfirmationList()" [disabled]="loading"></p-button>
+            <p-button label="Registrar" styleClass="ui-button-success big-button" icon="fa fa-fw fa-check" (onClick)="addBaptism()" [disabled]="loading"></p-button>
+            <p-button label="Cancelar" styleClass="ui-button-warning big-button" (onClick)="goToBaptismList()" [disabled]="loading"></p-button>
             <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
           </div>
         </div>

@@ -27,9 +27,9 @@ import { Sacraments } from '../../../../constants';
 // import {Observable} from "rxjs";
 
 @Component({
-  templateUrl: './communionCreate.component.html'
+  templateUrl: './marriageCreate.component.html'
 })
-export class CommunionCreateComponent implements OnInit, OnDestroy {
+export class MarriageCreateComponent implements OnInit, OnDestroy {
   user$: Observable<User>;
   faithful$: Observable<Faithful[]>;
   certificate$: Observable<Certificate[]>;
@@ -97,7 +97,7 @@ export class CommunionCreateComponent implements OnInit, OnDestroy {
 
     me.breadcrumbHome = {icon: 'fa fa-home', routerLink: ['/sacraments', 'home']};
     me.breadcrumbItems = [
-      {label:'Primera comunión', routerLink: ['/sacraments', 'communion']},
+      {label:'Matrimonio', routerLink: ['/sacraments', 'marriage']},
       {label:'Registro'}
     ];
 
@@ -209,7 +209,7 @@ export class CommunionCreateComponent implements OnInit, OnDestroy {
             if (data['payload'] && data['payload']['status'] && data['payload']['status'] == 'success') {
               me.loading = false;
               me.certificates = data['payload']['certificates'];
-              me.router.navigate(['sacraments', 'communion']);
+              me.router.navigate(['sacraments', 'baptism']);
             } else if(data['payload'] && data['payload']['status'] && data['payload']['status'] == 'error' && data['payload']['msg']) {
               me.showMessage('error', 'Error', data['payload']['msg']);
               me.loading = false;
@@ -239,7 +239,7 @@ export class CommunionCreateComponent implements OnInit, OnDestroy {
         }
       }
     );
-    me.certificateService.getAllCertificates({'sacramentId': Sacraments.COMUNION});
+    me.certificateService.getAllCertificates({'sacramentId': Sacraments.BAUTIZO});
     me.faithfulService.getAllFaithful();
     me.workService.getAllWorks({'id_tipo_obra': 1});
     me.jurisdictionService.getAllJurisdictions({});
@@ -271,6 +271,16 @@ export class CommunionCreateComponent implements OnInit, OnDestroy {
 
     if (!ValidateUtil.hasProperty(me.jurisdiction, 'id')) {
       me.showMessage('warn', 'Advertencia', 'El campo de Jurisdicción es obligatorio.');
+      return false;
+    }
+
+    if (!ValidateUtil.hasProperty(me.celebrantPriest, 'id')) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Sacerdote celebrante es obligatorio.');
+      return false;
+    }
+
+    if (!ValidateUtil.hasProperty(me.certifyingPriest, 'id')) {
+      me.showMessage('warn', 'Advertencia', 'El campo de Sacerdote certificador es obligatorio.');
       return false;
     }
 
@@ -316,30 +326,31 @@ export class CommunionCreateComponent implements OnInit, OnDestroy {
     me.currCertificate.fecha = me.getFormatedDate(event);
   }
 
-  addCommunion() {
+  addBaptism() {
     const me = this;
     if (me.validateData()) {
       me.loading = true;
 
       let params = {
-        'sacramentId': Sacraments.COMUNION,
+        'sacramentId': Sacraments.BAUTIZO,
         'faithfulId': me.faithful.id,
         'workId': me.work.id,
         'fecha': me.currCertificate.fecha,
         'jurisdictionId': me.jurisdiction.id,
+        'celebrantPriestId': me.celebrantPriest.id,
+        'certifyingPriestId': me.certifyingPriest.id,
         'libro': me.currCertificate.libroParroquia.libro,
         'pagina': me.currCertificate.libroParroquia.pagina,
         'numero': me.currCertificate.libroParroquia.numero,
         'observaciones': me.currCertificate.observaciones
       };
-      /*
+
       if (!!me.faithfulFather && !!me.faithfulFather.id) {
         params['padreId'] = me.faithfulFather.id;
       }
       if (!!me.faithfulMother && !!me.faithfulMother.id) {
         params['madreId'] = me.faithfulMother.id;
       }
-      */
       if (!!me.faithfulGodFather && !!me.faithfulGodFather.id) {
         params['padrinoId'] = me.faithfulGodFather.id;
       }
@@ -351,9 +362,9 @@ export class CommunionCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToCommunionList() {
+  goToBaptismList() {
     const me = this;
-    me.router.navigate(['sacraments', 'communion']);
+    me.router.navigate(['sacraments', 'baptism']);
   }
 
   filterFaithfulData(event) {
